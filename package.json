@@ -1,0 +1,48 @@
+{
+  "name": "creedcreations-new",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Bold Gen-Z creative agency website with experimental layouts and scroll-driven animations",
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "framer-motion",
+    "vanta.js",
+    "creative-agency",
+    "gen-z",
+    "web-design"
+  ],
+  "author": "CREED CREATIONS",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.183.1",
+    "@vitejs/plugin-react": "^5.1.4",
+    "autoprefixer": "^10.4.24",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.34.3",
+    "lucide-react": "^0.575.0",
+    "motion": "^12.34.3",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-tweet": "^3.3.0",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^3.4.19"
+  }
+}
