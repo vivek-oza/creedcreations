@@ -37,7 +37,7 @@ const Hero: React.FC = () => {
               </h2>
 
               {/* Main Headline with Flip Words - Two lines only */}
-              <h1 className="font-heading text-white leading-tight text-3xl sm:text-4xl md:text-5xl lg:text-3xl font-bold tracking-tight italic">
+              <h1 className="font-heading text-white leading-tight text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold tracking-tight italic">
                 <span className="block">
                   We develop{" "}
                   <FlipWords

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 const MARQUEE_ITEMS = [
   'Brand Identity Design',
@@ -36,7 +37,13 @@ const MarqueeStrip: React.FC = () => {
     ));
 
   return (
-    <div className="w-full bg-white border-t border-b border-black/10 py-4 sm:py-5 md:py-6 overflow-hidden">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.5 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full bg-white border-t border-b border-black/10 py-4 sm:py-5 md:py-6 overflow-hidden"
+    >
       <div
         className="flex w-max"
         style={{
@@ -46,7 +53,7 @@ const MarqueeStrip: React.FC = () => {
         <div className="flex shrink-0">{renderItems()}</div>
         <div className="flex shrink-0">{renderItems()}</div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

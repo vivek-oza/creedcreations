@@ -50,9 +50,20 @@ export const VANTA_CONFIG = {
 
 // Application Metadata
 export const APP_CONFIG = {
-  TITLE: 'CREED CREATIONS | Gen-Z Creative Agency',
-  DESCRIPTION: 'Bold. Disruptive. Creative. We\'re a Gen-Z creative agency specializing in graphic design and videography that breaks the rules.',
-  KEYWORDS: ['creative agency', 'graphic design', 'videography', 'gen-z', 'branding', 'digital design'],
+  TITLE: 'CREED CREATIONS | Best Graphic Design & Video Editing in Gandhinagar',
+  DESCRIPTION: 'Best graphic design agency in Gandhinagar. Professional video editing, thumbnail design, photography & branding. Led by Arun Baghel in Sargasan.',
+  KEYWORDS: [
+    'best graphic design in Gandhinagar',
+    'video editor in Gandhinagar',
+    'thumbnail design Gandhinagar',
+    'best photography Gandhinagar',
+    'Arun Baghel',
+    'creative agency Gandhinagar',
+    'brand design Sargasan',
+    'logo design Gandhinagar',
+    'video production Gujarat',
+    'CREED CREATIONS',
+  ],
   URL: 'https://creedcreations.com',
 } as const;
 
@@ -64,10 +75,10 @@ export const SOCIAL_LINKS = {
   LINKEDIN: 'https://linkedin.com/company/creedcreations',
 } as const;
 
-// Navigation Items — labels and section ids for scroll / contact modal
+// Navigation Items — labels, section ids for scroll, and optional route for page navigation
+// Home is handled by the logo; logo clicks navigate to home/hero
 export const NAVIGATION = [
-  { label: 'Home', href: '#home' },
-  { label: 'Portfolio', href: '#graphic-design' },
+  { label: 'Portfolio', href: '#graphic-design', to: '/portfolio' },
   { label: 'Services', href: '#services' },
   { label: 'About Us', href: '#about' },
   { label: 'Contact Us', href: '#contact' },

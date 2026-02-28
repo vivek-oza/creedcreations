@@ -35,11 +35,23 @@ body {
   min-height: 100vh;
   background-color: #000000;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 #app {
   width: 100%;
   min-height: 100vh;
+}
+
+/* Hide scrollbar on reels phone screen — like Instagram */
+.reels-scroll-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+.reels-scroll-hide::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Custom scrollbar */
@@ -116,6 +128,16 @@ body {
   }
 }
 
+/* Vertical marquee for scrolling reels inside phone */
+@keyframes reel-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
 /* Section headings — Archivo Black, big and bold */
 .section-heading {
   font-family: "Archivo Black", sans-serif;
@@ -153,4 +175,13 @@ html:not(.dark) {
 html:not(.dark) body {
   background-color: white;
   color: black;
+}
+
+/* Hide scrollbar for horizontal scroll galleries */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

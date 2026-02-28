@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface Review {
   name: string;
@@ -131,8 +133,17 @@ const REVIEWS: Review[] = [
   },
 ];
 
-const ReviewCard: React.FC<{ review: Review }> = ({ review }) => (
-  <article className="shrink-0 w-[260px] sm:w-[320px] md:w-[360px] [perspective:1000px]">
+const ReviewCard: React.FC<{ review: Review; fillWidth?: boolean }> = ({
+  review,
+  fillWidth,
+}) => (
+  <article
+    className={`[perspective:1000px] ${
+      fillWidth
+        ? 'w-full min-w-0'
+        : 'shrink-0 w-[260px] sm:w-[320px] md:w-[360px]'
+    }`}
+  >
     <div
       className="group h-full rounded-2xl bg-gray-100 p-5 sm:p-6 flex flex-col gap-3 border border-light-silver/30 transform-gpu transition-all duration-500 ease-out shadow-[0_4px_6px_rgba(0,0,0,0.04),0_10px_25px_rgba(0,0,0,0.06)] hover:bg-neon-orange hover:border-neon-orange/80 hover:[transform:translateY(-8px)_rotateX(-2deg)_translateZ(12px)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.1),0_0_0_1px_rgba(217,68,4,0.08)]"
       style={{ transformStyle: 'preserve-3d' }}
@@ -172,47 +183,98 @@ const ReviewCard: React.FC<{ review: Review }> = ({ review }) => (
   </article>
 );
 
+const MOBILE_REVIEW_LIMIT = 4;
+
 const ClientReviewsSection: React.FC = () => {
-  const renderCards = () =>
-    REVIEWS.map((review, idx) => (
+  const [expanded, setExpanded] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const displayedReviews =
+    isMobile && !expanded
+      ? REVIEWS.slice(0, MOBILE_REVIEW_LIMIT)
+      : REVIEWS;
+
+  const renderCards = (reviews: Review[] = REVIEWS) =>
+    reviews.map((review, idx) => (
       <ReviewCard key={`${review.handle}-${idx}`} review={review} />
     ));
 
   return (
     <section id="client-reviews" className="bg-white py-16 sm:py-20 md:py-24 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2 className="section-heading text-black text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="section-heading text-black text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+        >
           CLIENT REVIEWS
-        </h2>
-        <p className="text-black/60 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="text-black/60 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
+        >
           What our clients say about working with us.
-        </p>
+        </motion.p>
 
-        {/* Marquee row 1 */}
-        <div className="mt-8 mb-6 overflow-hidden [perspective:1000px] py-12">
-          <div
-            className="flex gap-6 w-max"
-            style={{ animation: 'marquee 55s linear infinite' }}
-          >
-            {renderCards()}
-            {renderCards()}
-          </div>
-        </div>
+        {/* Mobile: grid of reviews with View more */}
+        {isMobile ? (
+          <>
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:gap-6">
+              {displayedReviews.map((review, idx) => (
+                <ReviewCard
+                  key={`${review.handle}-${idx}`}
+                  review={review}
+                  fillWidth
+                />
+              ))}
+            </div>
+            {!expanded && (
+              <motion.button
+                type="button"
+                onClick={() => setExpanded(true)}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-8 w-full py-3 px-4 rounded-full border-2 border-neon-orange text-neon-orange text-sm font-semibold hover:bg-neon-orange hover:text-white transition-colors"
+              >
+                View more reviews
+              </motion.button>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Marquee row 1 — desktop */}
+            <div className="mt-8 mb-6 overflow-hidden [perspective:1000px] py-12">
+              <div
+                className="flex gap-6 w-max"
+                style={{ animation: 'marquee 55s linear infinite' }}
+              >
+                {renderCards()}
+                {renderCards()}
+              </div>
+            </div>
 
-        {/* Marquee row 2 (reverse) */}
-        <div className="overflow-hidden [perspective:1000px] py-12">
-          <div
-            className="flex gap-6 w-max"
-            style={{ animation: 'marquee-reverse 70s linear infinite' }}
-          >
-            {[...REVIEWS].reverse().map((review, idx) => (
-              <ReviewCard key={`${review.handle}-rev-${idx}`} review={review} />
-            ))}
-            {[...REVIEWS].reverse().map((review, idx) => (
-              <ReviewCard key={`${review.handle}-revdup-${idx}`} review={review} />
-            ))}
-          </div>
-        </div>
+            {/* Marquee row 2 (reverse) — desktop */}
+            <div className="overflow-hidden [perspective:1000px] py-12">
+              <div
+                className="flex gap-6 w-max"
+                style={{ animation: 'marquee-reverse 70s linear infinite' }}
+              >
+                {[...REVIEWS].reverse().map((review, idx) => (
+                  <ReviewCard key={`${review.handle}-rev-${idx}`} review={review} />
+                ))}
+                {[...REVIEWS].reverse().map((review, idx) => (
+                  <ReviewCard key={`${review.handle}-revdup-${idx}`} review={review} />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

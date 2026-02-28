@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { CometCard } from './ui/comet-card';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface TeamMember {
   name: string;
@@ -14,8 +16,8 @@ const TEAM: TeamMember[] = [
     role: 'CEO & Senior Video Editor',
     image: '/teamimages/arun.jpg',
     paragraphs: [
-      'Arun leads the studio with a strong vision for quality and innovation. With extensive experience in video editing, brand storytelling, and creative direction, he ensures that every project meets high creative and professional standards.',
-      'His expertise lies in transforming raw concepts into powerful visual narratives that connect with audiences. From brand films to promotional content, Arun oversees every detail — ensuring clarity, consistency, and impact.',
+      'Arun Baghel leads CREED CREATIONS with a strong vision for quality and innovation. As one of the best video editors in Gandhinagar, he brings extensive experience in brand storytelling and creative direction, ensuring every project meets high creative and professional standards.',
+      'His expertise lies in transforming raw concepts into powerful visual narratives that connect with audiences. From brand films to promotional content, Arun oversees every detail — ensuring clarity, consistency, and impact for brands across Gandhinagar and Gujarat.',
     ],
   },
   {
@@ -23,8 +25,8 @@ const TEAM: TeamMember[] = [
     role: 'Video Editor & Graphic Designer',
     image: '/teamimages/Umesh.jpg',
     paragraphs: [
-      'Umesh brings a versatile skill set across video editing and graphic design. He specializes in creating dynamic video content and clean, modern visual designs that align with brand goals.',
-      'With a strong understanding of pacing, composition, and audience psychology, he crafts visuals that are engaging and purpose-driven. His attention to detail ensures every frame and every layout feels polished and professional.',
+      'Umesh brings a versatile skill set across video editing and graphic design in Gandhinagar. He specializes in creating dynamic video content, thumbnail design, and clean, modern visual designs that align with brand goals.',
+      'With a strong understanding of pacing, composition, and audience psychology, he crafts visuals that are engaging and purpose-driven. His attention to detail ensures every frame and layout feels polished and professional.',
     ],
   },
   {
@@ -32,7 +34,7 @@ const TEAM: TeamMember[] = [
     role: 'Graphic Designer',
     image: '/teamimages/Mrugesh.jpg',
     paragraphs: [
-      'Mrugesh focuses on precision, brand consistency, and strong visual systems. His experience in brand identity design allows him to create cohesive visuals that strengthen recognition and communication.',
+      'Mrugesh focuses on precision and strong visual systems for graphic design in Gandhinagar. His experience in brand identity design allows him to create cohesive visuals that strengthen recognition and communication.',
       'He understands how typography, color theory, and layout structure work together to create impactful brand experiences. His designs are not just attractive — they are strategically aligned with business objectives.',
     ],
   },
@@ -50,14 +52,20 @@ const TEAM: TeamMember[] = [
     role: 'Videographer',
     image: '/teamimages/Mitesh.jpg',
     paragraphs: [
-      'Mitesh is skilled in professional videography, cinematography, and visual storytelling. With a strong command of camera techniques, lighting setups, and framing, he captures footage that elevates brand perception.',
-      'His understanding of composition and narrative flow ensures that every video project is visually compelling and production-ready.',
+      'Mitesh is skilled in professional videography and best photography services in Gandhinagar. With expertise in cinematography, lighting setups, and framing, he captures footage that elevates brand perception.',
+      'His understanding of composition and narrative flow ensures that every video project is visually compelling and production-ready for clients across Gujarat.',
     ],
   },
 ];
 
+const MOBILE_TEAM_LIMIT = 4;
+
 const AboutUsSection: React.FC = () => {
   const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const displayedTeam =
+    isMobile && !expanded ? TEAM.slice(0, MOBILE_TEAM_LIMIT) : TEAM;
 
   const openModal = (index: number) => setModalIndex(index);
   const closeModal = () => setModalIndex(null);
@@ -79,16 +87,34 @@ const AboutUsSection: React.FC = () => {
   return (
     <section id="team" className="py-16 sm:py-20 md:py-24 pt-0">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2 className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+        >
           OUR TEAM
-        </h2>
-        <p className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-10">
-          A focused team of editors, designers, and filmmakers building clear, sharp, and modern visuals for brands that want to stand out.
-        </p>
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-10"
+        >
+          A focused team of editors, designers, and filmmakers in Gandhinagar — offering the best graphic design, video editing, thumbnail design, and photography services. Building clear, sharp, and modern visuals for brands that want to stand out.
+        </motion.p>
 
         {/* Team grid — compact cards with expand */}
-        <div className="mt-10 sm:mt-12 grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-start">
-          {TEAM.map((member, index) => (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-10 sm:mt-12 grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-start"
+        >
+          {displayedTeam.map((member, index) => (
             <CometCard key={member.name} className="h-full">
               <article
                 className="relative rounded-2xl overflow-hidden border border-white/10 h-full flex flex-col"
@@ -102,7 +128,7 @@ const AboutUsSection: React.FC = () => {
                 <div className="w-full bg-black overflow-hidden flex items-center justify-center aspect-[3/4] max-h-[200px] sm:max-h-[220px]">
                   <img
                     src={member.image}
-                    alt={member.name}
+                    alt={`${member.name} - ${member.role} at CREED CREATIONS Gandhinagar`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -141,17 +167,32 @@ const AboutUsSection: React.FC = () => {
               </article>
             </CometCard>
           ))}
-        </div>
+        </motion.div>
+
+        {/* View more — mobile only */}
+        {isMobile && !expanded && (
+          <motion.button
+            type="button"
+            onClick={() => setExpanded(true)}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 w-full py-3 px-4 rounded-full border border-white/60 bg-white/5 text-white text-sm font-medium hover:bg-white/10 transition-colors md:hidden"
+          >
+            View more team members
+          </motion.button>
+        )}
       </div>
 
       {/* Team Member Modal */}
       {modalIndex !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 overflow-y-auto bg-black/60"
           style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
         >
           <div
-            className="relative w-full max-w-4xl rounded-2xl overflow-hidden"
+            className="relative w-full max-w-4xl my-auto rounded-2xl max-h-[90vh] overflow-y-auto"
             style={{
               background: 'rgba(255, 255, 255, 0.92)',
               backdropFilter: 'blur(24px)',
@@ -164,7 +205,7 @@ const AboutUsSection: React.FC = () => {
             <button
               type="button"
               onClick={closeModal}
-              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-black/15 bg-white/90 text-black hover:bg-black hover:text-white transition-colors duration-300"
+              className="absolute right-4 top-4 z-10 flex min-w-[44px] min-h-[44px] w-11 h-11 items-center justify-center rounded-full border border-black/15 bg-white/90 text-black hover:bg-black hover:text-white transition-colors duration-300"
               aria-label="Close"
             >
               <svg
@@ -203,7 +244,7 @@ const AboutUsSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={goPrev}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-black/20 text-black hover:bg-neon-orange hover:text-white hover:border-neon-orange transition-colors duration-300"
+                    className="flex min-w-[44px] min-h-[44px] w-11 h-11 items-center justify-center rounded-full border border-black/20 text-black hover:bg-neon-orange hover:text-white hover:border-neon-orange transition-colors duration-300"
                     aria-label="Previous team member"
                   >
                     ‹
@@ -211,7 +252,7 @@ const AboutUsSection: React.FC = () => {
                   <button
                     type="button"
                     onClick={goNext}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-black/20 text-black hover:bg-neon-orange hover:text-white hover:border-neon-orange transition-colors duration-300"
+                    className="flex min-w-[44px] min-h-[44px] w-11 h-11 items-center justify-center rounded-full border border-black/20 text-black hover:bg-neon-orange hover:text-white hover:border-neon-orange transition-colors duration-300"
                     aria-label="Next team member"
                   >
                     ›

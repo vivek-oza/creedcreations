@@ -1,72 +1,15 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import PosterCard from './PosterCard';
+import { POSTERS } from '../data/posters';
 
-const POSTERS = [
-  {
-    image: '/posters/Image1.jpeg',
-    title: 'Popular — The Idol',
-    subtitle: 'Music Poster Design',
-    description: 'HBO original series poster featuring The Weeknd, Madonna & Playboi Carti',
-    likes: '1.7k',
-    shares: '600',
-  },
-  {
-    image: '/posters/Image2.jpeg',
-    title: 'RXXL — Jogador',
-    subtitle: 'Artist Poster Design',
-    description: 'Bold urban typography poster with raw street fashion aesthetic',
-    likes: '2.1k',
-    shares: '480',
-  },
-  {
-    image: '/posters/Image3.jpeg',
-    title: 'Nike Air — Get On',
-    subtitle: 'Brand Campaign Poster',
-    description: 'Dynamic sneaker campaign with fluid motion graphics and neon palette',
-    likes: '3.4k',
-    shares: '920',
-  },
-  {
-    image: '/posters/Image4.jpeg',
-    title: 'Fashion Show',
-    subtitle: 'Event Poster Design',
-    description: 'High-contrast editorial poster for Maria Lebedeva\'s new collection',
-    likes: '1.9k',
-    shares: '540',
-  },
-  {
-    image: '/posters/Image5.jpeg',
-    title: 'Break Free',
-    subtitle: 'Lifestyle Poster',
-    description: 'Escape, embrace, adventure — a poster about self-discovery',
-    likes: '2.8k',
-    shares: '710',
-  },
-  {
-    image: '/posters/Image6.jpeg',
-    title: 'Always Be Creative',
-    subtitle: 'Motivational Poster',
-    description: 'CreaThink Media campaign celebrating the joy of creativity',
-    likes: '4.2k',
-    shares: '1.1k',
-  },
-  {
-    image: '/posters/Image7.jpeg',
-    title: 'Toyota GR Supra MK5',
-    subtitle: 'Automotive Poster',
-    description: 'Built to reignite the thrill of driving — cinematic car poster',
-    likes: '5.1k',
-    shares: '1.3k',
-  },
-  {
-    image: '/posters/Image8.jpeg',
-    title: 'Podium Hat-Trick',
-    subtitle: 'Sports Poster Design',
-    description: 'McLaren F1 podium celebration across Singapore, Japan & Qatar',
-    likes: '3.7k',
-    shares: '890',
-  },
-];
+/** Shared scroll animation settings */
+const scrollAnim = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 } as const,
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } as const,
+};
 
 /**
  * PortfolioSection Component
@@ -78,12 +21,21 @@ const PortfolioSection: React.FC = () => {
     <section id="graphic-design" className="bg-black py-16 sm:py-20 md:py-24 overflow-hidden">
       {/* Section Header */}
       <div className="px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto mb-12">
-        <h2 className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6">
+        <motion.h2
+          {...scrollAnim}
+          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+        >
           GRAPHIC DESIGNS
-        </h2>
-        <p className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
+        >
           A collection of posters that define brands, tell stories, and break the mold.
-        </p>
+        </motion.p>
       </div>
 
       {/* Row 1 — Scrolls Left */}

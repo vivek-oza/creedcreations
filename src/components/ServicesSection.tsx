@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface ServiceItem {
   title: string;
@@ -29,7 +31,7 @@ const SERVICES: ServiceItem[] = [
   {
     title: 'Graphic Design',
     description:
-      'Great design communicates clearly and visually. At CreedCreations, we provide professional graphic design services tailored to your marketing needs. From social media creatives to digital ads and promotional graphics, we design visuals that grab attention and drive engagement. Our focus is on clean layouts, strategic messaging, and visually appealing compositions that align with your brand identity. Every design we create is purposeful and optimized to support your marketing goals, helping your business communicate effectively and leave a lasting impression.',
+      'We offer the best graphic design in Gandhinagar. Great design communicates clearly and visually. At CreedCreations, we provide professional graphic design services tailored to your marketing needs. From social media creatives to digital ads and promotional graphics, we design visuals that grab attention and drive engagement. Our focus is on clean layouts, strategic messaging, and visually appealing compositions that align with your brand identity. Every design we create is purposeful and optimized to support your marketing goals across Gandhinagar and Gujarat.',
   },
   {
     title: 'Social Media Graphics',
@@ -89,12 +91,12 @@ const SERVICES: ServiceItem[] = [
   {
     title: 'Video Editing',
     description:
-      'Professional video editing transforms raw footage into powerful brand stories. At CreedCreations, we edit videos with precision, creativity, and attention to detail. We focus on smooth transitions, color correction, sound design, and engaging pacing to deliver high-quality content. Whether it’s social media videos, corporate content, or promotional campaigns, we ensure your message is clear and impactful. Our video editing services are designed to enhance storytelling and help your brand connect effectively with its audience.',
+      'Looking for a professional video editor in Gandhinagar? At CreedCreations, we edit videos with precision, creativity, and attention to detail. We focus on smooth transitions, color correction, sound design, and engaging pacing to deliver high-quality content. Whether it’s social media videos, corporate content, or promotional campaigns, we ensure your message is clear and impactful. Our video editing services are designed to enhance storytelling and help your brand connect effectively with its audience across Gujarat.',
   },
   {
     title: 'Videography',
     description:
-      'At CreedCreations, we provide professional videography services that capture your brand with clarity and creativity. We plan, shoot, and produce high-quality videos tailored to your marketing goals. From corporate shoots to product showcases and event coverage, we ensure every frame reflects professionalism and brand consistency. Our team focuses on storytelling, composition, and visual quality to create videos that engage viewers and build trust. We help businesses communicate visually with confidence and impact.',
+      'At CreedCreations in Gandhinagar, we provide professional videography and best photography services that capture your brand with clarity and creativity. We plan, shoot, and produce high-quality videos tailored to your marketing goals. From corporate shoots to product showcases and event coverage, we ensure every frame reflects professionalism and brand consistency. Our team focuses on storytelling, composition, and visual quality to create videos that engage viewers and build trust across Gujarat.',
   },
   {
     title: 'Motion Graphics',
@@ -118,8 +120,14 @@ const SERVICES: ServiceItem[] = [
   },
 ];
 
+const MOBILE_LIMIT = 8;
+
 const ServicesSection: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const displayedServices =
+    isMobile && !expanded ? SERVICES.slice(0, MOBILE_LIMIT) : SERVICES;
 
   const handleOpen = (index: number) => {
     setActiveIndex(index);
@@ -145,16 +153,38 @@ const ServicesSection: React.FC = () => {
   return (
     <section id="services" className="bg-black py-16 sm:py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2 className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+        >
           OUR SERVICES
-        </h2>
-        <p className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8">
-          Brand identity, design, development, and video — all under one roof.
-        </p>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-white/15">
-          {SERVICES.map((service, index) => (
-            <div
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
+        >
+          Best graphic design, video editing, thumbnail design, and photography in Gandhinagar — brand identity, development, and video production all under one roof. Led by Arun Baghel.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-white/15"
+        >
+          {displayedServices.map((service, index) => (
+            <motion.div
               key={service.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
               className="group flex flex-col gap-3 px-6 py-7 text-left text-white text-sm sm:text-base border-[0.5px] border-white/10 bg-white/5 hover:bg-neon-orange transition-colors duration-300 ease-out cursor-pointer"
               onClick={() => handleOpen(index)}
             >
@@ -172,16 +202,31 @@ const ServicesSection: React.FC = () => {
                   {service.title}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* View more — mobile only */}
+        {isMobile && !expanded && (
+          <motion.button
+            type="button"
+            onClick={() => setExpanded(true)}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6 w-full py-3 px-4 rounded-full border border-white/30 text-white text-sm font-medium hover:bg-white/10 transition-colors md:hidden"
+          >
+            View more services
+          </motion.button>
+        )}
       </div>
 
       {/* Service detail modal */}
       {activeIndex !== null && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4 sm:px-6">
+        <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-black/70">
           <div
-            className="relative w-full max-w-xl rounded-3xl border border-white/15 bg-black text-white p-6 sm:p-8"
+            className="relative w-full max-w-xl my-auto rounded-3xl border border-white/15 bg-black text-white p-6 sm:p-8 max-h-[90vh] overflow-y-auto"
             style={{
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
@@ -215,7 +260,7 @@ const ServicesSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="h-9 w-9 flex items-center justify-center rounded-full border border-white/30 text-white/80 hover:bg-white hover:text-black transition-colors"
+                  className="min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center rounded-full border border-white/30 text-white/80 hover:bg-white hover:text-black transition-colors"
                   aria-label="Previous service"
                 >
                   ‹
@@ -223,7 +268,7 @@ const ServicesSection: React.FC = () => {
                 <button
                   type="button"
                   onClick={goNext}
-                  className="h-9 w-9 flex items-center justify-center rounded-full border border-white/30 text-white/80 hover:bg-white hover:text-black transition-colors"
+                  className="min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center rounded-full border border-white/30 text-white/80 hover:bg-white hover:text-black transition-colors"
                   aria-label="Next service"
                 >
                   ›

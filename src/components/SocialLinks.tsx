@@ -60,7 +60,7 @@ const ICON_MAP: Record<string, string> = {
 
 function SocialIcon({ link, isLast }: { link: SocialLink; isLast: boolean }) {
   const baseLinkClasses =
-    'relative flex items-center justify-center rounded-full overflow-hidden transition-transform duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent shrink-0 h-11 w-11 sm:h-12 sm:w-12 md:h-14 md:w-14';
+    'relative flex items-center justify-center rounded-full overflow-hidden transition-transform duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent shrink-0 min-w-[44px] min-h-[44px] w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14';
   const isExternal = link.href.startsWith('http');
 
   return (
@@ -84,13 +84,15 @@ export const SocialLinks: React.FC<{ className?: string }> = ({ className }) => 
   return (
     <div
       className={cn(
-        'flex items-center justify-center',
-        'w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80',
-        'h-12 sm:h-14 md:h-16',
+        'flex flex-wrap items-center justify-center gap-3 sm:gap-2',
+        'w-full max-w-full sm:w-auto',
+        'min-h-12 sm:min-h-14 md:min-h-16',
+        'overflow-x-auto scrollbar-hide sm:overflow-visible',
+        'px-2 sm:px-0',
         className
       )}
     >
-      <div className="flex items-center justify-center">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-0 sm:-mr-5 sm:last:mr-0">
         {SOCIAL_LINKS.map((link, idx) => (
           <SocialIcon
             key={`${link.icon}-${link.label || link.name}`}

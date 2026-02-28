@@ -1,41 +1,64 @@
 import { useState, useEffect, useCallback } from 'react';
-import { NAVIGATION } from '../utils/constants';
+import { useLocation } from 'react-router-dom';
+
+/** Section-to-nav-label mapping per route. Order matters for fallback. */
+const SECTION_CONFIG: Record<string, { selector: string; label: string }[]> = {
+  '/': [
+    { selector: '#home', label: 'Home' },
+    { selector: '#graphic-design', label: 'Portfolio' },
+    { selector: '#video-design', label: 'Portfolio' },
+    { selector: '#services-thumbnails', label: 'Services' },
+    { selector: '#services', label: 'Services' },
+    { selector: '#about', label: 'About Us' },
+    { selector: '#team', label: 'About Us' },
+    { selector: '#client-reviews', label: 'About Us' },
+    { selector: '#our-clients', label: 'About Us' },
+    { selector: '#get-quote', label: 'Contact Us' },
+    { selector: '#stats', label: 'Contact Us' },
+    { selector: 'footer', label: 'Contact Us' },
+  ],
+  '/portfolio': [
+    { selector: '#portfolio-hero', label: 'Portfolio' },
+    { selector: '#graphic-designs', label: 'Portfolio' },
+    { selector: '#portfolio-thumbnails', label: 'Portfolio' },
+    { selector: '#video-design', label: 'Portfolio' },
+    { selector: '#video-designs', label: 'Portfolio' },
+    { selector: '#instagram-reels', label: 'Portfolio' },
+    { selector: 'footer', label: 'Contact Us' },
+  ],
+};
 
 /**
- * Detects which section is currently in view and returns the active nav label.
+ * Strict viewport-based section detection.
+ * A section is active only when the center of the viewport lies within it.
  */
 export function useActiveSection(): string {
   const [activeLabel, setActiveLabel] = useState<string>('Home');
-  const OFFSET = 150;
+  const location = useLocation();
+  const path = location.pathname;
+  const config = SECTION_CONFIG[path] ?? SECTION_CONFIG['/'];
 
   const checkSection = useCallback(() => {
-    const scrollY = window.scrollY;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    let currentLabel = 'Home';
+    const viewportCenter = window.scrollY + window.innerHeight / 2;
+    let currentLabel = config[0]?.label ?? 'Home';
 
-    if (scrollY >= docHeight - 200) {
-      setActiveLabel('Contact Us');
-      return;
-    }
-
-    for (let i = NAVIGATION.length - 1; i >= 0; i--) {
-      const item = NAVIGATION[i];
-      const selector = item.href;
+    for (let i = 0; i < config.length; i++) {
+      const { selector, label } = config[i];
       const el = document.querySelector(selector);
       if (!el) continue;
 
       const rect = el.getBoundingClientRect();
-      const sectionTop = rect.top + scrollY - OFFSET;
+      const sectionTop = rect.top + window.scrollY;
+      const sectionBottom = sectionTop + rect.height;
 
-      if (scrollY >= sectionTop) {
-        currentLabel = item.label;
+      if (viewportCenter >= sectionTop && viewportCenter <= sectionBottom) {
+        currentLabel = label;
         break;
       }
     }
 
-    setActiveLabel(currentLabel);
-  }, []);
+    setActiveLabel((prev) => (prev === currentLabel ? prev : currentLabel));
+  }, [path]);
 
   useEffect(() => {
     checkSection();

@@ -119,15 +119,23 @@ const StatsSection: React.FC = () => {
       className="bg-black py-16 sm:py-20 md:py-24 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-4 text-center md:text-left"
           style={{ fontFamily: "'Archivo Black', sans-serif" }}
         >
           OUR STATS
-        </h2>
-        <p className="text-white/70 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16 text-center md:text-left leading-relaxed">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/70 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16 text-center md:text-left leading-relaxed"
+        >
           A decade of creativity, hundreds of projects delivered, and trusted by brands worldwide — numbers that speak for themselves.
-        </p>
+        </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8 md:gap-12 lg:gap-16 items-stretch">
           {STATS.map((stat, index) => (
             <div

@@ -31,6 +31,7 @@ export default {
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out',
         'slide-up': 'slideUp 1s ease-out',
+        'roll-digit': 'rollDigit 0.35s ease-out forwards',
         'glow': 'glow 2s ease-in-out infinite alternate',
         'funky-glow': 'funkyGlow 3s ease-in-out infinite alternate',
         'text-float': 'textFloat 4s ease-in-out infinite',
@@ -73,6 +74,10 @@ export default {
         marquee: {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
+        },
+        rollDigit: {
+          '0%': { transform: 'translateY(-100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
       },
     },

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { motion } from 'motion/react';
 
 interface VideoSectionProps {
   title: string;
@@ -32,15 +33,33 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
   return (
     <section id="video-design" className="bg-neon-orange py-16 sm:py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <h2 className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6">
+        <motion.h2
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+        >
           {title}
-        </h2>
-        <p className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
+        >
           {description}
-        </p>
+        </motion.p>
 
         {/* Video — auto-play on scroll */}
-        <div className="mt-10 sm:mt-12 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-10 sm:mt-12 max-w-4xl mx-auto"
+        >
           <div
             className="relative rounded-2xl overflow-hidden bg-black border border-white/10"
             style={{
@@ -62,7 +81,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
             <button
               type="button"
               onClick={goToPrev}
-              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 w-10 h-10 flex items-center justify-center transition-colors"
+              className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 min-w-[44px] min-h-[44px] w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center transition-colors text-xl sm:text-2xl"
               aria-label="Previous video"
             >
               ‹
@@ -70,13 +89,13 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
             <button
               type="button"
               onClick={goToNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 w-10 h-10 flex items-center justify-center transition-colors"
+              className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/60 hover:bg-black/80 text-white border border-white/20 min-w-[44px] min-h-[44px] w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center transition-colors text-xl sm:text-2xl"
               aria-label="Next video"
             >
               ›
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
