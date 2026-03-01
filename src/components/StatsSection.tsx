@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '../lib/utils';
 import { motion, useInView } from 'motion/react';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface StatItem {
   value: string;
@@ -120,18 +121,18 @@ const StatsSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          initial={titleAnim.initial}
+          animate={isInView ? titleAnim.whileInView : titleAnim.initial}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-4 text-center md:text-left"
           style={{ fontFamily: "'Archivo Black', sans-serif" }}
         >
           OUR STATS
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          initial={descAnim.initial}
+          animate={isInView ? descAnim.whileInView : descAnim.initial}
+          transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           className="text-white/70 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16 text-center md:text-left leading-relaxed"
         >
           A decade of creativity, hundreds of projects delivered, and trusted by brands worldwide — numbers that speak for themselves.

@@ -30,8 +30,10 @@ const HomePage: React.FC = () => {
       {false && <ThumbnailSection />}
       <ServicesSection />
       {false && <WhiteStrip />}
-      <div className="bg-neon-orange">
+      <div className="bg-white">
         <AboutIntroSection />
+      </div>
+      <div className="bg-black">
         <AboutUsSection />
       </div>
       {false && <WhiteStrip />}
@@ -39,10 +41,10 @@ const HomePage: React.FC = () => {
       <OurClientsSection />
       <section id="get-quote" className="bg-white py-10 sm:py-12 border-y border-black/5">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
           <p className="section-heading text-black text-2xl sm:text-3xl md:text-4xl tracking-tight">

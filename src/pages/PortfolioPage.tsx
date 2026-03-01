@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 import { Navigation, Logo, Footer, VideoSection, ThumbnailSection } from '../components';
 import { useNavTheme } from '../hooks/useNavTheme';
 import { useIsHeroInView } from '../hooks/useIsHeroInView';
@@ -152,29 +153,33 @@ const PortfolioPage: React.FC = () => {
       <section id="graphic-designs" className="bg-white">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-8"
         >
-          <h2
+          <motion.h2
+            {...titleAnim}
             className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             GRAPHIC DESIGNS
-          </h2>
-          <p className="text-black/60 text-base sm:text-lg max-w-2xl">
+          </motion.h2>
+          <motion.p
+            {...descAnim}
+            className="text-black/60 text-base sm:text-lg max-w-2xl"
+          >
             Posters, campaigns, and visual identity work by CREED CREATIONS studio.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* 1. Marquee cards strip — like home page (two rows, opposite directions) */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 36 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="py-12 sm:py-16 overflow-hidden"
         >
           <div className="bg-black py-12 sm:py-16 overflow-hidden">
@@ -281,19 +286,25 @@ const PortfolioPage: React.FC = () => {
 
         {/* 2. Staggered grid — tightly packed, no white space */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16"
         >
-          <h3 className="text-black/40 text-sm font-semibold uppercase tracking-widest mb-2">
+          <motion.h3
+            {...titleAnim}
+            className="text-black/40 text-sm font-semibold uppercase tracking-widest mb-2"
+          >
             Grid Showcase
-          </h3>
-          <p className="text-black/50 text-sm max-w-xl mb-6">
+          </motion.h3>
+          <motion.p
+            {...descAnim}
+            className="text-black/50 text-sm max-w-xl mb-6"
+          >
             Posters and campaigns across music, fashion, automotive, and lifestyle — each crafted
             with bold typography and a distinct visual language.
-          </p>
+          </motion.p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 sm:gap-2">
             {POSTERS.map((poster, idx) => (
               <motion.div
@@ -335,25 +346,19 @@ const PortfolioPage: React.FC = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="bg-black py-16 sm:py-20 md:py-24 overflow-visible"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 overflow-visible">
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            {...titleAnim}
             className="text-white text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             EXPERIENCE OUR WORK
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            {...descAnim}
             className="text-white/90 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16"
           >
             Drag and tilt these cards to explore our creative process — bold design meets interactive experience.
@@ -399,25 +404,19 @@ const PortfolioPage: React.FC = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="bg-white py-16 sm:py-20 md:py-24"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            {...titleAnim}
             className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             VIDEO DESIGNS
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            {...descAnim}
             className="text-black/60 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16"
           >
             YouTube Shorts — bite-sized video design work.
@@ -578,14 +577,20 @@ const PortfolioPage: React.FC = () => {
         </div>
       </motion.section>
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8 sm:pb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8 sm:pb-10"
+      >
         <Link
           to="/"
           className="inline-flex items-center text-black font-medium hover:text-neon-orange transition-colors duration-300"
         >
           ← Back to Home
         </Link>
-      </div>
+      </motion.div>
       <Footer onContactClick={() => setIsContactOpen(true)} />
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const THUMBNAILS = [
@@ -48,21 +49,25 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
       {/* Section header — portfolio only */}
       {isPortfolio && (
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8"
         >
-          <h2
+          <motion.h2
+            {...titleAnim}
             className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             THUMBNAIL DESIGNS
-          </h2>
-          <p className="text-black/60 text-base sm:text-lg max-w-2xl">
+          </motion.h2>
+          <motion.p
+            {...descAnim}
+            className="text-black/60 text-base sm:text-lg max-w-2xl"
+          >
             Best thumbnail design in Gandhinagar — a curated showcase of our design work for YouTube, reels, and social media. Browse through each project.
-          </p>
+          </motion.p>
         </motion.div>
       )}
 

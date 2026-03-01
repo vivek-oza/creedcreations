@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { CometCard } from './ui/comet-card';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface TeamMember {
   name: string;
@@ -43,7 +43,7 @@ const TEAM: TeamMember[] = [
     role: 'Graphic Designer',
     image: '/teamimages/Dhaval.jpg',
     paragraphs: [
-      'Dhaval specializes in modern, high-impact design solutions tailored to each client’s needs. His innovative approach to layout and digital creatives helps brands stand out in competitive markets.',
+      "Dhaval specializes in modern, high-impact design solutions tailored to each client's needs. His innovative approach to layout and digital creatives helps brands stand out in competitive markets.",
       'With experience in digital campaigns, social media visuals, and marketing materials, he ensures every design is both creative and performance-focused.',
     ],
   },
@@ -84,101 +84,135 @@ const AboutUsSection: React.FC = () => {
     );
   };
 
+  const renderCard = (member: TeamMember, index: number, key: string) => (
+    <motion.article
+      key={key}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.55,
+        delay: (index % TEAM.length) * 0.06,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="group shrink-0 w-[300px] sm:w-[340px] md:w-[380px] lg:w-[420px]"
+    >
+      <button
+        type="button"
+        onClick={() => openModal(index % TEAM.length)}
+        className="w-full text-left block"
+      >
+        {/* Square card — full image, no overlay */}
+        <div className="relative aspect-square rounded-xl overflow-hidden bg-black">
+          <img
+            src={member.image}
+            alt={`${member.name} - ${member.role} at CREED CREATIONS Gandhinagar`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+        {/* Name and designation below image — white text */}
+        <div className="mt-4">
+          <h3 className="section-heading text-white text-lg sm:text-xl tracking-tight">
+            {member.name}
+          </h3>
+          <p className="text-white/80 text-sm font-medium uppercase tracking-wide mt-0.5">
+            {member.role}
+          </p>
+        </div>
+      </button>
+    </motion.article>
+  );
+
+  const marqueeRow = (rowKey: string) => (
+    <div key={rowKey} className="flex shrink-0 gap-6 pr-6">
+      {TEAM.map((member, idx) => renderCard(member, idx, `${rowKey}-${member.name}`))}
+    </div>
+  );
+
   return (
-    <section id="team" className="py-16 sm:py-20 md:py-24 pt-0">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="team" className="py-16 sm:py-20 md:py-24 bg-black overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-14">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {...titleAnim}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
         >
           OUR TEAM
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-10"
+          {...descAnim}
+          className="text-white/80 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
         >
           A focused team of editors, designers, and filmmakers in Gandhinagar — offering the best graphic design, video editing, thumbnail design, and photography services. Building clear, sharp, and modern visuals for brands that want to stand out.
         </motion.p>
+      </div>
 
-        {/* Team grid — compact cards with expand */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 sm:mt-12 grid gap-6 sm:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 items-start"
+      {/* Slow marquee — cards scroll horizontally (desktop) */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="hidden md:block w-full overflow-hidden"
+      >
+        <div
+          className="flex w-max"
+          style={{ animation: 'marquee-slow 90s linear infinite' }}
         >
+          {marqueeRow('a')}
+          {marqueeRow('b')}
+        </div>
+      </motion.div>
+
+      {/* Mobile: static grid with view more */}
+      <div className="md:hidden max-w-7xl mx-auto px-6 sm:px-8 mt-10">
+        <div className="grid grid-cols-2 gap-6">
           {displayedTeam.map((member, index) => (
-            <CometCard key={member.name} className="h-full">
-              <article
-                className="relative rounded-2xl overflow-hidden border border-white/10 h-full flex flex-col"
-                style={{
-                  backgroundColor: '#d94404',
-                  boxShadow:
-                    '0 0 0 1px rgba(255,255,255,0.04), 0 24px 60px rgba(0,0,0,0.7)',
-                }}
+            <motion.div
+              key={member.name}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{
+                duration: 0.55,
+                delay: index * 0.06,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => openModal(index)}
+                className="w-full text-left block"
               >
-                {/* Image */}
-                <div className="w-full bg-black overflow-hidden flex items-center justify-center aspect-[3/4] max-h-[200px] sm:max-h-[220px]">
+                <div className="relative aspect-square rounded-xl overflow-hidden bg-black">
                   <img
                     src={member.image}
-                    alt={`${member.name} - ${member.role} at CREED CREATIONS Gandhinagar`}
+                    alt={`${member.name} - ${member.role}`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
                 </div>
-
-                {/* Compact content — image + designation */}
-                <div className="p-4 sm:p-5 flex flex-col gap-2 text-white flex-1 min-h-0">
-                  <h3 className="section-heading text-base sm:text-lg tracking-tight">
+                <div className="mt-3">
+                  <h3 className="section-heading text-white text-base tracking-tight">
                     {member.name}
                   </h3>
-                  <p className="text-xs sm:text-sm font-medium uppercase tracking-wide text-white/90">
+                  <p className="text-white/80 text-xs font-medium uppercase tracking-wide mt-0.5">
                     {member.role}
                   </p>
-
-                  {/* Expand button — white arrow */}
-                  <button
-                    type="button"
-                    onClick={() => openModal(index)}
-                    className="mt-auto flex items-center justify-center w-9 h-9 rounded-full border border-white/40 hover:bg-white/10 text-white transition-colors duration-300"
-                    aria-label="Read more"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-5 h-5"
-                    >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </button>
                 </div>
-              </article>
-            </CometCard>
+              </button>
+            </motion.div>
           ))}
-        </motion.div>
-
-        {/* View more — mobile only */}
-        {isMobile && !expanded && (
+        </div>
+        {!expanded && (
           <motion.button
             type="button"
             onClick={() => setExpanded(true)}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-8 w-full py-3 px-4 rounded-full border border-white/60 bg-white/5 text-white text-sm font-medium hover:bg-white/10 transition-colors md:hidden"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 w-full py-3 px-4 rounded-full border border-white/30 bg-white/5 text-white text-sm font-medium hover:bg-white/10 transition-colors"
           >
             View more team members
           </motion.button>
@@ -201,7 +235,6 @@ const AboutUsSection: React.FC = () => {
                 '0 0 0 1px rgba(0,0,0,0.06), 0 32px 80px rgba(0,0,0,0.2)',
             }}
           >
-            {/* Close button */}
             <button
               type="button"
               onClick={closeModal}
@@ -223,7 +256,6 @@ const AboutUsSection: React.FC = () => {
             </button>
 
             <div className="flex flex-col lg:flex-row min-h-[400px] sm:min-h-[450px]">
-              {/* Left — description */}
               <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                 <div>
                   <h2 className="section-heading text-black text-2xl sm:text-3xl tracking-tight mb-2">
@@ -239,7 +271,6 @@ const AboutUsSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Navigation — prev/next */}
                 <div className="flex items-center gap-3 mt-6 pt-6 border-t border-black/10">
                   <button
                     type="button"
@@ -263,7 +294,6 @@ const AboutUsSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right — large image */}
               <div className="w-full lg:w-[45%] min-h-[280px] sm:min-h-[320px] lg:min-h-full bg-black flex items-center justify-center">
                 <img
                   src={TEAM[modalIndex].image}
@@ -280,4 +310,3 @@ const AboutUsSection: React.FC = () => {
 };
 
 export default AboutUsSection;
-

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface ServiceItem {
   title: string;
@@ -154,28 +155,22 @@ const ServicesSection: React.FC = () => {
     <section id="services" className="bg-black py-16 sm:py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {...titleAnim}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
         >
           OUR SERVICES
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          {...descAnim}
           className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
         >
           Best graphic design, video editing, thumbnail design, and photography in Gandhinagar — brand identity, development, and video production all under one roof. Led by Arun Baghel.
         </motion.p>
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-white/15"
         >
           {displayedServices.map((service, index) => (

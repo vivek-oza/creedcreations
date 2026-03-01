@@ -119,6 +119,16 @@ body {
   }
 }
 
+/* Slow marquee for team section */
+@keyframes marquee-slow {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes marquee-reverse {
   0% {
     transform: translateX(-50%);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface Blog {
   id: string;
@@ -100,30 +101,24 @@ const BlogsSection: React.FC = () => {
     <section id="blogs" className="bg-neon-orange py-16 sm:py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {...titleAnim}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
           style={{ fontFamily: "'Archivo Black', sans-serif" }}
         >
           BLOGS
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          {...descAnim}
           className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-10"
         >
           Insights on photo editing, video production, AI content, social media marketing, and more — straight from our creative studio.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           {BLOGS.map((blog, index) => (

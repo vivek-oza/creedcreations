@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface Review {
   name: string;
@@ -202,19 +203,13 @@ const ClientReviewsSection: React.FC = () => {
     <section id="client-reviews" className="bg-white py-16 sm:py-20 md:py-24 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {...titleAnim}
           className="section-heading text-black text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
         >
           CLIENT REVIEWS
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          {...descAnim}
           className="text-black/60 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
         >
           What our clients say about working with us.

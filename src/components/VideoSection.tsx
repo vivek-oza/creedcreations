@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
+import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
 interface VideoSectionProps {
   title: string;
@@ -34,19 +35,13 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
     <section id="video-design" className="bg-neon-orange py-16 sm:py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          {...titleAnim}
           className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
         >
           {title}
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+          {...descAnim}
           className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
         >
           {description}
@@ -54,10 +49,10 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
 
         {/* Video — auto-play on scroll */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 36 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10 sm:mt-12 max-w-4xl mx-auto"
         >
           <div
