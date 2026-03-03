@@ -31,7 +31,8 @@ const Logo: React.FC<LogoProps> = ({ className = '', onClick, isLightBg = false,
 
   return (
     <div
-      className={`fixed top-4 left-4 sm:top-6 sm:left-6 z-50 transition-all duration-300 ${className} ${isCompact ? 'scale-90 sm:scale-[0.85] origin-top-left' : ''}`}
+      className={`fixed top-4 left-4 sm:top-6 sm:left-6 2xl:top-8 2xl:left-8 z-50 transition-all duration-300 ${className} ${isCompact ? 'scale-90 sm:scale-[0.85] origin-top-left' : ''}`}
+      style={{ top: 'max(1rem, env(safe-area-inset-top))', left: 'max(1rem, env(safe-area-inset-left))' }}
       data-cursor-context={isLightBg ? 'light' : 'dark'}
     >
       <Link
@@ -43,7 +44,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', onClick, isLightBg = false,
         <img
           src="/newlogo.png"
           alt="CREED CREATIONS"
-          className={`object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-lg ${isCompact ? 'w-16 h-16 sm:w-20 sm:h-22' : 'w-20 h-20 sm:w-24 sm:h-26'}`}
+          width={96}
+          height={104}
+          className={`object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-lg aspect-square ${isCompact ? 'w-16 h-16 sm:w-20 sm:h-20' : 'w-20 h-20 sm:w-24 sm:h-24'}`}
           style={{
             filter: isLightBg ? 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))' : 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
           }}

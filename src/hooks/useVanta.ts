@@ -1,7 +1,17 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 
 interface VantaEffect {
   destroy: () => void;
+}
+
+/** Detect mobile/touch - skip Vanta to avoid WebGL issues and white screen */
+function isMobileOrTouch(): boolean {
+  if (typeof window === 'undefined') return true; // SSR: assume mobile, skip Vanta
+  return (
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(max-width: 768px)').matches ||
+    'ontouchstart' in window
+  );
 }
 
 interface VantaWavesOptions {
@@ -51,8 +61,10 @@ const DEFAULT_VANTA_CONFIG: Omit<VantaWavesOptions, 'el'> = {
 export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {}) => {
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<VantaEffect | null>(null);
+  const [skipVanta] = useState(() => isMobileOrTouch());
 
   const createEffect = useCallback(() => {
+    if (skipVanta) return;
     if (!vantaRef.current || !window.VANTA || !window.THREE) return;
 
     try {
@@ -64,7 +76,7 @@ export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {})
     } catch (error) {
       console.error('Failed to initialize Vanta effect:', error);
     }
-  }, [overrides]);
+  }, [overrides, skipVanta]);
 
   const destroyEffect = useCallback(() => {
     if (!vantaEffect.current) return;
@@ -77,21 +89,20 @@ export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {})
     }
   }, []);
 
-  // Initialize and cleanup
+  // Initialize and cleanup (skip on mobile to prevent WebGL white screen)
   useEffect(() => {
-    if (!window.VANTA || !window.THREE) {
-      console.warn('Vanta.js or Three.js not loaded');
-      return;
-    }
+    if (skipVanta) return;
+    if (typeof window === 'undefined' || !window.VANTA || !window.THREE) return;
 
     createEffect();
     return destroyEffect;
-  }, [createEffect, destroyEffect]);
+  }, [createEffect, destroyEffect, skipVanta]);
 
-  // Debounced resize handler
+  // Debounced resize handler (only when Vanta is active)
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+    if (skipVanta) return;
 
+    let timeoutId: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
@@ -105,7 +116,7 @@ export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {})
       clearTimeout(timeoutId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [createEffect, destroyEffect]);
+  }, [createEffect, destroyEffect, skipVanta]);
 
   return vantaRef;
 };

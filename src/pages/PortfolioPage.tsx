@@ -87,7 +87,7 @@ const PortfolioPage: React.FC = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden w-full min-w-0">
       <SmoothCursor isLightBg={isLightBg} />
       <Logo isLightBg={isLightBg} isCompact={isCompact} />
       <Navigation isLightBg={isLightBg} isCompact={isCompact} onContactClick={() => setIsContactOpen(true)} />
@@ -97,14 +97,15 @@ const PortfolioPage: React.FC = () => {
         id="portfolio-hero"
         ref={heroRef}
         style={{ y, opacity, scale }}
-        className="relative flex min-h-[85vh] sm:min-h-[90vh] items-center justify-center overflow-hidden bg-white pt-24 sm:pt-28"
+        className="relative flex min-h-[85vh] sm:min-h-[90vh] items-center justify-center overflow-hidden bg-white"
+        style={{ paddingTop: 'max(6rem, env(safe-area-inset-top) + 5rem)' }}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter text-black uppercase overflow-hidden sm:whitespace-nowrap min-w-0"
+            className="text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl xl:text-fluid-6xl font-black tracking-tighter text-black uppercase break-words min-w-0"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             {HERO_TITLE}
@@ -113,7 +114,7 @@ const PortfolioPage: React.FC = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 sm:mt-8 text-base sm:text-lg text-black/50 max-w-xl"
+            className="mt-6 sm:mt-8 text-fluid-base sm:text-fluid-lg text-black/50 max-w-xl"
           >
             A curated collection of graphic design and video work — brands, campaigns, and visuals
             that define our studio.
@@ -129,14 +130,14 @@ const PortfolioPage: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
-          className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-8"
+          className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-12 sm:pt-16 md:pt-20 pb-6 sm:pb-8"
         >
           <motion.h2
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
-            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             GRAPHIC DESIGNS
@@ -150,7 +151,7 @@ const PortfolioPage: React.FC = () => {
               delay: 0.08,
               ease: [0.22, 1, 0.36, 1] as any,
             }}
-            className="text-black/60 text-base sm:text-lg max-w-2xl"
+            className="text-black/60 text-fluid-base sm:text-fluid-lg max-w-2xl"
           >
             Posters, campaigns, and visual identity work by CREED CREATIONS studio.
           </motion.p>
@@ -173,7 +174,7 @@ const PortfolioPage: React.FC = () => {
                 {POSTS.map((post, idx) => (
                   <div
                     key={`m1-${idx}`}
-                    className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
+                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
                   >
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
@@ -194,7 +195,7 @@ const PortfolioPage: React.FC = () => {
                 {POSTS.map((post, idx) => (
                   <div
                     key={`m1dup-${idx}`}
-                    className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
+                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
                   >
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
@@ -222,7 +223,7 @@ const PortfolioPage: React.FC = () => {
                 {[...POSTS].reverse().map((post, idx) => (
                   <div
                     key={`m2-${idx}`}
-                    className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
+                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
                   >
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
@@ -243,7 +244,7 @@ const PortfolioPage: React.FC = () => {
                 {[...POSTS].reverse().map((post, idx) => (
                   <div
                     key={`m2dup-${idx}`}
-                    className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
+                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
                   >
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
@@ -272,7 +273,7 @@ const PortfolioPage: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
-          className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16"
+          className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16"
         >
           <motion.h3
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
@@ -341,7 +342,7 @@ const PortfolioPage: React.FC = () => {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
         className="bg-black py-16 sm:py-20 md:py-24 overflow-visible"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 overflow-visible">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 overflow-visible">
           <motion.h2
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -409,13 +410,13 @@ const PortfolioPage: React.FC = () => {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
         className="bg-white py-16 sm:py-20 md:py-24"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <motion.h2
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
-            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             VIDEO DESIGNS
@@ -479,13 +480,13 @@ const PortfolioPage: React.FC = () => {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
         className="bg-white py-16 sm:py-20 md:py-24"
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <motion.h2
             initial={{ opacity: 0, y: 40, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
-            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             FEATURED VIDEO PROJECTS
@@ -545,13 +546,13 @@ const PortfolioPage: React.FC = () => {
 
       {/* Section: INSTAGRAM REELS — marquee strip + modal */}
       <section id="instagram-reels" className="bg-white py-16 sm:py-20 md:py-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <motion.h2
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
-            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             INSTAGRAM REELS
@@ -620,7 +621,7 @@ const PortfolioPage: React.FC = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8 sm:pb-10"
+        className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pb-8 sm:pb-10"
       >
         <Link
           to="/"

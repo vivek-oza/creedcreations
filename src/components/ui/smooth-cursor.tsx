@@ -72,10 +72,19 @@ export function SmoothCursor({
   },
 }: SmoothCursorProps) {
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
   useEffect(() => {
-    const check = () =>
+    const checkTouch = () =>
       window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window
-    setIsTouchDevice(check())
+    const checkMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setIsTouchDevice(checkTouch())
+    setPrefersReducedMotion(checkMotion())
+
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handler = () => setPrefersReducedMotion(mq.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
   const [cursorColor, setCursorColor] = useState<CursorColor>(
@@ -102,9 +111,8 @@ export function SmoothCursor({
 
   const cursorElement = cursor ?? <CursorSVG color={cursorColor} />
 
-  if (isTouchDevice) return null
-
   useEffect(() => {
+    if (isTouchDevice || prefersReducedMotion) return
     const handleMouseMove = (e: MouseEvent) => {
       const currentPos = { x: e.clientX, y: e.clientY }
 
@@ -159,11 +167,13 @@ export function SmoothCursor({
       document.body.style.cursor = "auto"
       if (colorCheckRaf.current != null) cancelAnimationFrame(colorCheckRaf.current)
     }
-  }, [cursorX, cursorY, rotation, scale])
+  }, [cursorX, cursorY, rotation, scale, isTouchDevice, prefersReducedMotion])
+
+  if (isTouchDevice || prefersReducedMotion) return null
 
   return (
     <motion.div
-      className="pointer-events-none fixed top-0 left-0 z-[9999] will-change-transform"
+      className="pointer-events-none fixed top-0 left-0 z-[9999]"
       style={{
         x: cursorX,
         y: cursorY,
@@ -171,6 +181,7 @@ export function SmoothCursor({
         scale: scale,
         translateX: "-50%",
         translateY: "-50%",
+        willChange: "transform",
       }}
     >
       {cursorElement}

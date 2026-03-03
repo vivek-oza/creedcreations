@@ -142,7 +142,7 @@ const ReviewCard: React.FC<{ review: Review; fillWidth?: boolean }> = ({
     className={`[perspective:1000px] ${
       fillWidth
         ? 'w-full min-w-0'
-        : 'shrink-0 w-[260px] sm:w-[320px] md:w-[360px]'
+        : 'shrink-0 w-[280px] min-[400px]:w-[300px] sm:w-[320px] md:w-[360px]'
     }`}
   >
     <div
@@ -201,16 +201,16 @@ const ClientReviewsSection: React.FC = () => {
 
   return (
     <section id="client-reviews" className="bg-white py-16 sm:py-20 md:py-24 overflow-hidden">
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <motion.h2
           {...titleAnim}
-          className="section-heading text-black text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+          className="section-heading text-black text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4 sm:mb-6"
         >
           CLIENT REVIEWS
         </motion.h2>
         <motion.p
           {...descAnim}
-          className="text-black/60 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
+          className="text-black/60 text-fluid-base sm:text-fluid-lg mt-3 max-w-3xl leading-relaxed mb-8"
         >
           What our clients say about working with us.
         </motion.p>
@@ -218,7 +218,7 @@ const ClientReviewsSection: React.FC = () => {
         {/* Mobile: grid of reviews with View more */}
         {isMobile ? (
           <>
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:gap-6">
+            <div className="mt-6 sm:mt-8 grid grid-cols-1 gap-4 sm:gap-6">
               {displayedReviews.map((review, idx) => (
                 <ReviewCard
                   key={`${review.handle}-${idx}`}

@@ -107,6 +107,8 @@ const AboutUsSection: React.FC = () => {
           <img
             src={member.image}
             alt={`${member.name} - ${member.role} at CREED CREATIONS Gandhinagar`}
+            width={420}
+            height={420}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
           />
@@ -131,17 +133,17 @@ const AboutUsSection: React.FC = () => {
   );
 
   return (
-    <section id="team" className="py-16 sm:py-20 md:py-24 bg-black overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 mb-14">
+    <section id="team" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-black overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 mb-10 sm:mb-14">
         <motion.h2
           {...titleAnim}
-          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+          className="section-heading text-white text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4 sm:mb-6"
         >
           OUR TEAM
         </motion.h2>
         <motion.p
           {...descAnim}
-          className="text-white/80 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
+          className="text-white/80 text-fluid-base sm:text-fluid-lg mt-3 max-w-3xl leading-relaxed"
         >
           A focused team of editors, designers, and filmmakers in Gandhinagar — offering the best graphic design, video editing, thumbnail design, and photography services. Building clear, sharp, and modern visuals for brands that want to stand out.
         </motion.p>
@@ -165,8 +167,8 @@ const AboutUsSection: React.FC = () => {
       </motion.div>
 
       {/* Mobile: static grid with view more */}
-      <div className="md:hidden max-w-7xl mx-auto px-6 sm:px-8 mt-10">
-        <div className="grid grid-cols-2 gap-6">
+      <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 mt-8">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
           {displayedTeam.map((member, index) => (
             <motion.div
               key={member.name}
@@ -188,6 +190,8 @@ const AboutUsSection: React.FC = () => {
                   <img
                     src={member.image}
                     alt={`${member.name} - ${member.role}`}
+                    width={420}
+                    height={420}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -298,6 +302,8 @@ const AboutUsSection: React.FC = () => {
                 <img
                   src={TEAM[modalIndex].image}
                   alt={TEAM[modalIndex].name}
+                  width={600}
+                  height={600}
                   className="w-full h-full object-cover"
                 />
               </div>

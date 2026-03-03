@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
   const isCompact = !isHeroInView;
 
   return (
-    <div className="App">
+    <div className="App overflow-x-hidden w-full min-w-0">
       <SmoothCursor isLightBg={isLightBg} />
       <Logo isLightBg={isLightBg} isCompact={isCompact} />
       <Navigation isLightBg={isLightBg} isCompact={isCompact} onContactClick={() => setIsContactOpen(true)} />
@@ -39,15 +39,15 @@ const HomePage: React.FC = () => {
       {false && <WhiteStrip />}
       <ClientReviewsSection />
       <OurClientsSection />
-      <section id="get-quote" className="bg-white py-10 sm:py-12 border-y border-black/5">
+      <section id="get-quote" className="bg-white py-8 sm:py-10 md:py-12 border-y border-black/5">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left"
         >
-          <p className="section-heading text-black text-2xl sm:text-3xl md:text-4xl tracking-tight">
+          <p className="section-heading text-black text-lg xs:text-xl sm:text-fluid-2xl md:text-fluid-3xl tracking-tight">
             THINK, DESIGN, INNOVATE<br className="sm:hidden" /> AND DELIVER
           </p>
           <div className="flex items-center gap-3">

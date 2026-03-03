@@ -83,8 +83,8 @@ function StatBlock({
       }}
       className="flex flex-col items-center text-center group cursor-default"
     >
-      <div
-        className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white group-hover:text-neon-orange transition-colors duration-300"
+        <div
+          className="text-3xl xs:text-4xl sm:text-fluid-5xl md:text-fluid-6xl lg:text-fluid-7xl font-black tracking-tighter text-white group-hover:text-neon-orange transition-colors duration-300"
         style={{ fontFamily: "'Archivo Black', sans-serif" }}
       >
         {hasNumber ? (
@@ -117,14 +117,14 @@ const StatsSection: React.FC = () => {
     <section
       ref={ref}
       id="stats"
-      className="bg-black py-16 sm:py-20 md:py-24 overflow-hidden"
+      className="bg-black py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <motion.h2
           initial={titleAnim.initial}
           animate={isInView ? titleAnim.whileInView : titleAnim.initial}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-4 text-center md:text-left"
+          className="section-heading text-white text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-3 sm:mb-4 text-center md:text-left"
           style={{ fontFamily: "'Archivo Black', sans-serif" }}
         >
           OUR STATS
@@ -133,11 +133,11 @@ const StatsSection: React.FC = () => {
           initial={descAnim.initial}
           animate={isInView ? descAnim.whileInView : descAnim.initial}
           transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="text-white/70 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16 text-center md:text-left leading-relaxed"
+          className="text-white/70 text-fluid-base sm:text-fluid-lg max-w-2xl mb-8 sm:mb-12 md:mb-16 text-center md:text-left leading-relaxed"
         >
           A decade of creativity, hundreds of projects delivered, and trusted by brands worldwide — numbers that speak for themselves.
         </motion.p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8 md:gap-12 lg:gap-16 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-8 md:gap-12 lg:gap-16 items-stretch">
           {STATS.map((stat, index) => (
             <div
               key={stat.label}

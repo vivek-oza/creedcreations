@@ -6,6 +6,17 @@ export default {
   ],
   darkMode: 'class',
   theme: {
+    screens: {
+      xs: '360px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+      '3xl': '1920px',
+      '4k': '2560px',
+      '4k-xl': '3840px',
+    },
     extend: {
       colors: {
         // Primary palette: Orange, Black, White, Light Silver Grey
@@ -27,6 +38,31 @@ export default {
         'body': ['Roboto', 'system-ui', 'sans-serif'],
         'heading': ['Roboto', 'system-ui', 'sans-serif'],
         'archivo': ['Archivo Black', 'sans-serif'],
+      },
+      fontSize: {
+        'fluid-xs': ['clamp(0.7rem, 1.5vw + 0.5rem, 0.8125rem)', { lineHeight: '1.4' }],
+        'fluid-sm': ['clamp(0.8125rem, 1.5vw + 0.5rem, 0.9375rem)', { lineHeight: '1.5' }],
+        'fluid-base': ['clamp(0.875rem, 1.2vw + 0.6rem, 1.0625rem)', { lineHeight: '1.6' }],
+        'fluid-lg': ['clamp(1rem, 1.2vw + 0.7rem, 1.1875rem)', { lineHeight: '1.5' }],
+        'fluid-xl': ['clamp(1.125rem, 1.5vw + 0.8rem, 1.375rem)', { lineHeight: '1.4' }],
+        'fluid-2xl': ['clamp(1.25rem, 2vw + 1rem, 1.75rem)', { lineHeight: '1.3' }],
+        'fluid-3xl': ['clamp(1.5rem, 2.5vw + 1.25rem, 2.25rem)', { lineHeight: '1.2' }],
+        'fluid-4xl': ['clamp(1.75rem, 3vw + 1.5rem, 2.5rem)', { lineHeight: '1.15' }],
+        'fluid-5xl': ['clamp(2rem, 4vw + 1.5rem, 3rem)', { lineHeight: '1.1' }],
+        'fluid-6xl': ['clamp(2.25rem, 5vw + 2rem, 3.75rem)', { lineHeight: '1.05' }],
+        'fluid-7xl': ['clamp(2.5rem, 6vw + 2.5rem, 4.5rem)', { lineHeight: '1' }],
+        'fluid-8xl': ['clamp(3rem, 7vw + 3rem, 5.5rem)', { lineHeight: '0.95' }],
+        'fluid-9xl': ['clamp(3.5rem, 8vw + 3.5rem, 6.5rem)', { lineHeight: '0.9' }],
+      },
+      maxWidth: {
+        'container': '1280px',
+        'container-wide': '1536px',
+        'container-narrow': '1024px',
+        'screen-4k': '2560px',
+      },
+      spacing: {
+        'section': 'clamp(4rem, 8vw, 6rem)',
+        'section-sm': 'clamp(3rem, 6vw, 4.5rem)',
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out',

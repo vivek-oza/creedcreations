@@ -96,7 +96,8 @@ const Navigation: React.FC<NavigationProps> = ({ className = '', onContactClick,
   return (
     <>
       <nav
-        className={`fixed top-4 right-4 sm:top-6 sm:right-6 z-50 transition-all duration-300 ${className} ${isCompact ? 'scale-90 sm:scale-[0.9] origin-top-right' : ''}`}
+        className={`fixed top-4 right-4 sm:top-6 sm:right-6 2xl:top-8 2xl:right-8 z-50 transition-all duration-300 ${className} ${isCompact ? 'scale-90 sm:scale-[0.9] origin-top-right' : ''}`}
+        style={{ top: 'max(1rem, env(safe-area-inset-top))', right: 'max(1rem, env(safe-area-inset-right))' }}
         data-cursor-context={isLightBg ? 'light' : 'dark'}
       >
         <div className="relative">
@@ -152,7 +153,7 @@ const Navigation: React.FC<NavigationProps> = ({ className = '', onContactClick,
           aria-label="Close menu"
         />
         <div
-          className={`absolute top-20 right-4 left-4 rounded-2xl p-4 transition-transform duration-300 ${
+          className={`absolute top-[max(5.5rem,calc(env(safe-area-inset-top)+5rem))] right-4 left-4 rounded-2xl p-4 transition-transform duration-300 max-h-[calc(100dvh-7rem)] overflow-y-auto ${
             mobileOpen ? 'translate-y-0' : '-translate-y-4'
           }`}
           style={{

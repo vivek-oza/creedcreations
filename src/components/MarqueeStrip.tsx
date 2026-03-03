@@ -29,10 +29,10 @@ const MarqueeStrip: React.FC = () => {
   const renderItems = () =>
     MARQUEE_ITEMS.map((item, idx) => (
       <span key={idx} className="flex items-center shrink-0">
-        <span className="text-gray-900 font-archivo font-semibold italic text-xl sm:text-2xl md:text-3xl uppercase tracking-wider whitespace-nowrap">
+        <span className="text-gray-900 font-archivo font-semibold italic text-sm sm:text-fluid-lg md:text-fluid-xl uppercase tracking-wider whitespace-nowrap">
           {item}
         </span>
-        <span className="text-gray-600 mx-6 sm:mx-8 md:mx-10 text-lg italic">{SEPARATOR}</span>
+        <span className="text-gray-600 mx-4 sm:mx-6 md:mx-8 text-fluid-base italic">{SEPARATOR}</span>
       </span>
     ));
 
@@ -42,7 +42,7 @@ const MarqueeStrip: React.FC = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full bg-white border-t border-b border-black/10 py-4 sm:py-5 md:py-6 overflow-hidden"
+      className="w-full bg-white border-t border-b border-black/10 py-3 sm:py-4 md:py-5 overflow-hidden"
     >
       <div
         className="flex w-max"

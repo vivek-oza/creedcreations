@@ -32,17 +32,17 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
   };
 
   return (
-    <section id="video-design" className="bg-neon-orange py-16 sm:py-20 md:py-24">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="video-design" className="bg-neon-orange py-12 sm:py-16 md:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <motion.h2
           {...titleAnim}
-          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+          className="section-heading text-white text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4 sm:mb-6"
         >
           {title}
         </motion.h2>
         <motion.p
           {...descAnim}
-          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed"
+          className="text-white/90 text-fluid-base sm:text-fluid-lg mt-3 max-w-3xl leading-relaxed"
         >
           {description}
         </motion.p>

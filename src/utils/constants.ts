@@ -28,13 +28,17 @@ export const ANIMATIONS = {
   EXTRA_SLOW: 0.8,
 } as const;
 
-// Breakpoints (matches TailwindCSS)
+// Breakpoints (matches TailwindCSS - mobile-first)
 export const BREAKPOINTS = {
+  XS: 360,
   SM: 640,
   MD: 768,
   LG: 1024,
   XL: 1280,
   '2XL': 1536,
+  '3XL': 1920,
+  '4K': 2560,
+  '4K_XL': 3840,
 } as const;
 
 // Vanta.js Waves Configuration

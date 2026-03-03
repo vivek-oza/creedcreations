@@ -94,17 +94,17 @@ const Footer: React.FC<FooterProps> = () => {
       ref={ref}
       className="relative bg-black text-white overflow-hidden border-t border-white/10"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-10" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom) + 1.5rem)' }}>
         {/* Row 1: Brand + Tagline (left) | Social (right) */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 sm:gap-6 mb-6 sm:mb-8"
         >
           <div>
             <h2
-              className="text-2xl sm:text-3xl font-black tracking-tight uppercase mb-0.5"
+              className="text-lg xs:text-xl sm:text-fluid-2xl md:text-fluid-3xl font-black tracking-tight uppercase mb-0.5"
               style={{ fontFamily: "'Archivo Black', sans-serif" }}
             >
               CREED CREATIONS

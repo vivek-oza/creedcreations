@@ -25,7 +25,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]">
+    <div className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0">
       <div
         className="rounded-2xl overflow-hidden"
         style={{
@@ -40,6 +40,8 @@ const PosterCard: React.FC<PosterCardProps> = ({
           <img
             src={image}
             alt={title}
+            width={320}
+            height={427}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
             draggable={false}
             loading="lazy"

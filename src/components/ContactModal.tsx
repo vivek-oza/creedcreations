@@ -104,12 +104,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 sm:px-6 overflow-y-auto py-4 sm:py-6"
       style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
       onClick={handleClose}
     >
       <div
-        className="relative w-full max-w-xl rounded-2xl border border-black/10 bg-white p-6 sm:p-8"
+        className="relative w-full max-w-xl rounded-2xl border border-black/10 bg-white p-6 sm:p-8 max-h-[calc(100vh-2rem)] overflow-y-auto my-auto"
         style={{
           boxShadow: '0 0 0 1px rgba(0,0,0,0.06), 0 32px 80px rgba(0,0,0,0.15)',
         }}

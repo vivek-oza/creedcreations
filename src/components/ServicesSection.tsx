@@ -152,17 +152,17 @@ const ServicesSection: React.FC = () => {
     );
   };
   return (
-    <section id="services" className="bg-black py-16 sm:py-20 md:py-24">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="services" className="bg-black py-12 sm:py-16 md:py-20 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <motion.h2
           {...titleAnim}
-          className="section-heading text-white text-4xl sm:text-5xl md:text-6xl tracking-tight uppercase mb-6"
+          className="section-heading text-white text-xl xs:text-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4 sm:mb-6"
         >
           OUR SERVICES
         </motion.h2>
         <motion.p
           {...descAnim}
-          className="text-white/90 text-base sm:text-lg mt-3 max-w-3xl leading-relaxed mb-8"
+          className="text-white/90 text-fluid-base sm:text-fluid-lg mt-3 max-w-3xl leading-relaxed mb-8"
         >
           Best graphic design, video editing, thumbnail design, and photography in Gandhinagar — brand identity, development, and video production all under one roof. Led by Arun Baghel.
         </motion.p>
@@ -171,7 +171,7 @@ const ServicesSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-white/15"
+          className="mt-6 sm:mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-white/15 gap-px"
         >
           {displayedServices.map((service, index) => (
             <motion.div
@@ -180,7 +180,7 @@ const ServicesSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
-              className="group flex flex-col gap-3 px-6 py-7 text-left text-white text-sm sm:text-base border-[0.5px] border-white/10 bg-white/5 hover:bg-neon-orange transition-colors duration-300 ease-out cursor-pointer"
+              className="group flex flex-col gap-2 sm:gap-3 px-4 py-5 sm:px-6 sm:py-7 text-left text-white text-xs sm:text-sm md:text-base border-[0.5px] border-white/10 bg-white/5 hover:bg-neon-orange transition-colors duration-300 ease-out cursor-pointer"
               onClick={() => handleOpen(index)}
             >
               {/* Icon row — simple subtle glyph to echo reference UI */}

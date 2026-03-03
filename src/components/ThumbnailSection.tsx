@@ -56,7 +56,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
     <section
       id={isPortfolio ? 'portfolio-thumbnails' : 'services-thumbnails'}
       className={`relative w-full overflow-hidden ${
-        isPortfolio ? 'bg-white py-16 sm:py-20' : 'min-h-screen bg-neon-orange'
+        isPortfolio ? 'bg-white py-12 sm:py-16 md:py-20' : 'min-h-screen min-h-[100dvh] bg-neon-orange'
       }`}
     >
       {/* Section header — portfolio only */}
@@ -66,18 +66,18 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-8"
+          className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pb-6 sm:pb-8"
         >
           <motion.h2
             {...titleAnim}
-            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             THUMBNAIL DESIGNS
           </motion.h2>
           <motion.p
             {...descAnim}
-            className="text-black/60 text-base sm:text-lg max-w-2xl"
+            className="text-black/60 text-fluid-base sm:text-fluid-lg max-w-2xl"
           >
             A curated showcase of our thumbnail designs for YouTube, reels, and social media — click through to explore each project.
           </motion.p>
@@ -85,7 +85,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
       )}
 
       {/* Image area */}
-      <div className={isPortfolio ? 'relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12' : 'absolute inset-0'}>
+      <div className={isPortfolio ? 'relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12' : 'absolute inset-0'}>
         <div className={isPortfolio ? 'relative aspect-[16/9] sm:aspect-[21/9] rounded-xl overflow-hidden bg-black/5' : 'absolute inset-0'}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -99,6 +99,9 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
               <img
                 src={current.src}
                 alt={current.title}
+                width={1920}
+                height={1080}
+                loading="lazy"
                 className={`w-full h-full object-center ${
                   isPortfolio ? 'object-contain' : 'object-cover'
                 }`}
@@ -161,7 +164,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
 
       {/* Content: overlay (home) or below (portfolio) */}
       {isPortfolio ? (
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-6 sm:pt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-6 sm:pt-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -172,12 +175,12 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
               className="space-y-2"
             >
               <h2
-                className="text-black text-2xl sm:text-3xl md:text-4xl tracking-tight uppercase"
+                className="text-black text-fluid-2xl sm:text-fluid-3xl md:text-fluid-4xl tracking-tight uppercase"
                 style={{ fontFamily: "'Archivo Black', sans-serif" }}
               >
                 {current.title}
               </h2>
-              <p className="text-black/70 text-base sm:text-lg max-w-2xl">
+                  <p className="text-black/70 text-fluid-base sm:text-fluid-lg max-w-2xl">
                 {current.description}
               </p>
             </motion.div>
@@ -200,7 +203,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
         </div>
       ) : (
         <>
-          <div className="relative z-10 flex min-h-screen flex-col items-center justify-end px-6 sm:px-8 lg:px-12 pb-20 sm:pb-24 md:pb-32">
+          <div className="relative z-10 flex min-h-screen min-h-[100dvh] flex-col items-center justify-end px-4 sm:px-6 md:px-8 lg:px-12 pb-16 sm:pb-20 md:pb-24 lg:pb-32" style={{ paddingBottom: 'max(4rem, env(safe-area-inset-bottom) + 4rem)' }}>
             <div className="max-w-7xl mx-auto w-full">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -212,12 +215,12 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
                   className="space-y-3"
                 >
                   <h2
-                    className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight uppercase"
+                    className="text-white text-fluid-2xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase"
                     style={{ fontFamily: "'Archivo Black', sans-serif" }}
                   >
                     {current.title}
                   </h2>
-                  <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-2xl">
+                  <p className="text-white/90 text-fluid-base sm:text-fluid-lg md:text-fluid-xl max-w-2xl">
                     {current.description}
                   </p>
                 </motion.div>
@@ -225,7 +228,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
             </div>
           </div>
 
-          <div className="absolute bottom-8 sm:bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+          <div className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2" style={{ bottom: 'max(1.5rem, env(safe-area-inset-bottom) + 1rem)' }}>
             {THUMBNAILS.map((_, idx) => (
               <button
                 key={idx}
