@@ -42,7 +42,7 @@ const AboutIntroSection: React.FC = () => {
             className="flex flex-col items-center lg:items-end shrink-0 gap-6"
           >
             <img
-              src="/newlogo.png"
+              src="/bgs/aboutarun.png"
               alt="Creed Creations"
               className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-contain"
             />

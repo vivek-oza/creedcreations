@@ -1,27 +1,14 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { titleAnim, descAnim } from '../utils/scrollAnimations';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { Navigation, Logo, Footer, VideoSection, ThumbnailSection } from '../components';
-import { useNavTheme } from '../hooks/useNavTheme';
 import { useIsHeroInView } from '../hooks/useIsHeroInView';
 import ContactModal from '../components/ContactModal';
 import { SmoothCursor } from '../components/ui/smooth-cursor';
-import { POSTERS } from '../data/posters';
-import { Iphone } from '../components/ui/iphone';
-import { Heart, MessageCircle, Share2 } from 'lucide-react';
+import { POSTS } from '../data/posts';
 import { DraggableCardBody, DraggableCardContainer } from '../components/ui/draggable-card';
 
 const HERO_TITLE = 'MY BEST WORK';
-
-const INSTAGRAM_REELS = [
-  { id: 'DRADg0GDCO9', title: 'Creative Motion', desc: 'Design in motion.' },
-  { id: 'DQzakcgDI3R', title: 'Brand Story', desc: 'Storytelling through visuals.' },
-  { id: 'DMNR_D1Rq2d', title: 'Visual Rhythm', desc: 'Flow and motion.' },
-  { id: 'DRrCmGeDNda', title: 'Bold Typography', desc: 'Type meets motion.' },
-  { id: 'DLxXMjSRqvb', title: 'Cinematic', desc: 'Short-form design.' },
-  { id: 'DFQMrelvw5a', title: 'Design in Motion', desc: 'Moving visuals.' },
-];
 
 const VIDEO_SHORTS = [
   { id: '5_MQhfa0VwU' },
@@ -32,79 +19,64 @@ const VIDEO_SHORTS = [
   { id: 'zF4u7Wm3F_I' },
 ];
 
-/**
- * Portfolio Page
- * Hero with text covering full area, Graphic Design sections with bento, marquee, grids
- */
-const REEL_AUTO_ADVANCE_MS = 24000; // Auto-scroll after ~24s (typical reel length)
+const FEATURED_VIDEOS = [
+  { id: 'rGgrxO1WkdQ', title: 'CREED CREATIONS — Showreel' },
+  { id: 'gx9uqip4xbY', title: 'Brand Film — Visual Story' },
+  { id: 'Jv5Z_r5wZBU', title: 'Design Breakdown — Campaign' },
+  { id: 'RKWkcTl0IIs', title: 'Thumbnail & Reel Design' },
+];
+
+const INSTAGRAM_REELS = [
+  {
+    id: 'DRADg0GDCO9',
+    label: 'Reel 1',
+    url: 'https://www.instagram.com/reel/DRADg0GDCO9/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+  {
+    id: 'DQzakcgDI3R',
+    label: 'Reel 2',
+    url: 'https://www.instagram.com/reel/DQzakcgDI3R/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+  {
+    id: 'DMDaaBwxMEl',
+    label: 'Reel 3',
+    url: 'https://www.instagram.com/reel/DMDaaBwxMEl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+  {
+    id: 'DMVTy18xQSy',
+    label: 'Reel 4',
+    url: 'https://www.instagram.com/reel/DMVTy18xQSy/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+  {
+    id: 'DMc0xkeR9ak',
+    label: 'Reel 5',
+    url: 'https://www.instagram.com/reel/DMc0xkeR9ak/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+  {
+    id: 'DRrCmGeDNda',
+    label: 'Reel 6',
+    url: 'https://www.instagram.com/reel/DRrCmGeDNda/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+  },
+];
+
+// Reel preview images from public/reels/ (Reel1.png … Reel6.png), name-wise
+const REEL_PREVIEWS: Record<string, string> = {
+  DRADg0GDCO9: '/reels/Reel1.png',
+  DQzakcgDI3R: '/reels/Reel2.png',
+  DMDaaBwxMEl: '/reels/Reel3.png',
+  DMVTy18xQSy: '/reels/Reel4.png',
+  DMc0xkeR9ak: '/reels/Reel5.png',
+  DRrCmGeDNda: '/reels/Reel6.png',
+};
+
+const getReelPreview = (id: string) => REEL_PREVIEWS[id] ?? '/reels/Reel1.png';
 
 const PortfolioPage: React.FC = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const isLightBg = useNavTheme();
+  const isLightBg = true;
   const isHeroInView = useIsHeroInView();
   const isCompact = !isHeroInView;
-  const [activeReelIndex, setActiveReelIndex] = useState(0);
-  const [isReelsSectionInView, setIsReelsSectionInView] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
-  const reelsScrollRef = useRef<HTMLDivElement>(null);
-  const reelsSectionRef = useRef<HTMLElement>(null);
-  const autoAdvanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleReelsScroll = useCallback(() => {
-    const el = reelsScrollRef.current;
-    if (!el) return;
-    const reelHeight = el.clientHeight;
-    if (reelHeight <= 0) return;
-    const idx = Math.round(el.scrollTop / reelHeight);
-    const clamped = Math.min(Math.max(idx, 0), INSTAGRAM_REELS.length - 1);
-    setActiveReelIndex((prev) => (prev === clamped ? prev : clamped));
-  }, []);
-
-  useEffect(() => {
-    const el = reelsScrollRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(handleReelsScroll);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [handleReelsScroll]);
-
-  useEffect(() => {
-    const section = reelsSectionRef.current;
-    if (!section) return;
-    const io = new IntersectionObserver(
-      ([entry]) => setIsReelsSectionInView(entry.isIntersecting),
-      { threshold: 0.2 }
-    );
-    io.observe(section);
-    return () => io.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isReelsSectionInView) {
-      if (autoAdvanceTimerRef.current) {
-        clearTimeout(autoAdvanceTimerRef.current);
-        autoAdvanceTimerRef.current = null;
-      }
-      return;
-    }
-    const scheduleNext = () => {
-      autoAdvanceTimerRef.current = setTimeout(() => {
-        const el = reelsScrollRef.current;
-        if (!el) return;
-        const reelHeight = el.clientHeight;
-        const next = Math.min(activeReelIndex + 1, INSTAGRAM_REELS.length - 1);
-        if (next > activeReelIndex) {
-          el.scrollTo({ top: next * reelHeight, behavior: 'smooth' });
-        } else {
-          el.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }, REEL_AUTO_ADVANCE_MS);
-    };
-    scheduleNext();
-    return () => {
-      if (autoAdvanceTimerRef.current) clearTimeout(autoAdvanceTimerRef.current);
-    };
-  }, [isReelsSectionInView, activeReelIndex]);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -156,18 +128,28 @@ const PortfolioPage: React.FC = () => {
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-8"
         >
           <motion.h2
-            {...titleAnim}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
             className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             GRAPHIC DESIGNS
           </motion.h2>
           <motion.p
-            {...descAnim}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1] as any,
+            }}
             className="text-black/60 text-base sm:text-lg max-w-2xl"
           >
             Posters, campaigns, and visual identity work by CREED CREATIONS studio.
@@ -188,7 +170,7 @@ const PortfolioPage: React.FC = () => {
                 className="flex gap-6 w-max"
                 style={{ animation: 'marquee 45s linear infinite' }}
               >
-                {POSTERS.map((poster, idx) => (
+                {POSTS.map((post, idx) => (
                   <div
                     key={`m1-${idx}`}
                     className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
@@ -196,20 +178,20 @@ const PortfolioPage: React.FC = () => {
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
                         <img
-                          src={poster.image}
-                          alt={poster.title}
+                          src={post.image}
+                          alt={post.title}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
                       </div>
                       <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{poster.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{poster.subtitle}</p>
+                        <p className="text-white font-semibold text-sm">{post.title}</p>
+                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
                       </div>
                     </div>
                   </div>
                 ))}
-                {POSTERS.map((poster, idx) => (
+                {POSTS.map((post, idx) => (
                   <div
                     key={`m1dup-${idx}`}
                     className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
@@ -217,15 +199,15 @@ const PortfolioPage: React.FC = () => {
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
                         <img
-                          src={poster.image}
-                          alt={poster.title}
+                          src={post.image}
+                          alt={post.title}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
                       </div>
                       <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{poster.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{poster.subtitle}</p>
+                        <p className="text-white font-semibold text-sm">{post.title}</p>
+                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
                       </div>
                     </div>
                   </div>
@@ -237,7 +219,7 @@ const PortfolioPage: React.FC = () => {
                 className="flex gap-6 w-max"
                 style={{ animation: 'marquee-reverse 55s linear infinite' }}
               >
-                {[...POSTERS].reverse().map((poster, idx) => (
+                {[...POSTS].reverse().map((post, idx) => (
                   <div
                     key={`m2-${idx}`}
                     className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
@@ -245,20 +227,20 @@ const PortfolioPage: React.FC = () => {
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
                         <img
-                          src={poster.image}
-                          alt={poster.title}
+                          src={post.image}
+                          alt={post.title}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
                       </div>
                       <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{poster.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{poster.subtitle}</p>
+                        <p className="text-white font-semibold text-sm">{post.title}</p>
+                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
                       </div>
                     </div>
                   </div>
                 ))}
-                {[...POSTERS].reverse().map((poster, idx) => (
+                {[...POSTS].reverse().map((post, idx) => (
                   <div
                     key={`m2dup-${idx}`}
                     className="shrink-0 w-[272px] sm:w-[304px] md:w-[320px]"
@@ -266,15 +248,15 @@ const PortfolioPage: React.FC = () => {
                     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                       <div className="aspect-[3/4] overflow-hidden">
                         <img
-                          src={poster.image}
-                          alt={poster.title}
+                          src={post.image}
+                          alt={post.title}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
                       </div>
                       <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{poster.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{poster.subtitle}</p>
+                        <p className="text-white font-semibold text-sm">{post.title}</p>
+                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
                       </div>
                     </div>
                   </div>
@@ -289,26 +271,36 @@ const PortfolioPage: React.FC = () => {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as any }}
           className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 sm:py-16"
         >
           <motion.h3
-            {...titleAnim}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
             className="text-black/40 text-sm font-semibold uppercase tracking-widest mb-2"
           >
             Grid Showcase
           </motion.h3>
           <motion.p
-            {...descAnim}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1] as any,
+            }}
             className="text-black/50 text-sm max-w-xl mb-6"
           >
-            Posters and campaigns across music, fashion, automotive, and lifestyle — each crafted
-            with bold typography and a distinct visual language.
+            Our best poster and campaign work — music, fashion, automotive, and lifestyle. Each piece
+            crafted with bold typography and a distinct visual language.
           </motion.p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 sm:gap-2">
-            {POSTERS.map((poster, idx) => (
+            {POSTS.map((post, idx) => (
               <motion.div
-                key={poster.image}
+                key={post.image}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
@@ -320,16 +312,16 @@ const PortfolioPage: React.FC = () => {
                 className="group relative overflow-hidden rounded-lg border border-black/5 bg-white aspect-[3/4]"
               >
                 <img
-                  src={poster.image}
-                  alt={poster.title}
+                  src={post.image}
+                  alt={post.title}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/85 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white font-bold text-sm sm:text-base">{poster.title}</p>
-                  <p className="text-white/80 text-xs sm:text-sm">{poster.subtitle}</p>
+                  <p className="text-white font-bold text-sm sm:text-base">{post.title}</p>
+                  <p className="text-white/80 text-xs sm:text-sm">{post.subtitle}</p>
                   <p className="text-white/70 text-xs mt-1 line-clamp-2 hidden sm:block">
-                    {poster.description}
+                    {post.description}
                   </p>
                 </div>
               </motion.div>
@@ -346,19 +338,29 @@ const PortfolioPage: React.FC = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
         className="bg-black py-16 sm:py-20 md:py-24 overflow-visible"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 overflow-visible">
           <motion.h2
-            {...titleAnim}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
             className="text-white text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             EXPERIENCE OUR WORK
           </motion.h2>
           <motion.p
-            {...descAnim}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1] as any,
+            }}
             className="text-white/90 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16"
           >
             Drag and tilt these cards to explore our creative process — bold design meets interactive experience.
@@ -404,19 +406,29 @@ const PortfolioPage: React.FC = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
         className="bg-white py-16 sm:py-20 md:py-24"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <motion.h2
-            {...titleAnim}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
             className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
             VIDEO DESIGNS
           </motion.h2>
           <motion.p
-            {...descAnim}
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1] as any,
+            }}
             className="text-black/60 text-base sm:text-lg max-w-2xl mb-12 sm:mb-16"
           >
             YouTube Shorts — bite-sized video design work.
@@ -458,124 +470,150 @@ const PortfolioPage: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Section: INSTAGRAM REELS — hidden for now */}
+      {/* Section: FEATURED VIDEOS — four-tile grid */}
       <motion.section
-        ref={reelsSectionRef}
-        id="instagram-reels"
+        id="featured-videos"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="hidden bg-black py-12 sm:py-16 md:py-20"
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
+        className="bg-white py-16 sm:py-20 md:py-24"
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-0">
-            {/* Left: text that changes with reel — scroll-based */}
-            <motion.div
-              className="order-2 lg:order-1"
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h2
-                className="text-white text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-6"
-                style={{ fontFamily: "'Archivo Black', sans-serif" }}
+          <motion.h2
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
+            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            style={{ fontFamily: "'Archivo Black', sans-serif" }}
+          >
+            FEATURED VIDEO PROJECTS
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{
+              duration: 0.65,
+              delay: 0.08,
+              ease: [0.22, 1, 0.36, 1] as any,
+            }}
+            className="text-black/60 text-base sm:text-lg max-w-2xl mb-10 sm:mb-12"
+          >
+            Longer-form edits, showreels, and campaign videos that go beyond shorts — a closer look
+            at how we tell brand stories with motion, pacing, and sound.
+          </motion.p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+            {FEATURED_VIDEOS.map((video, idx) => (
+              <motion.article
+                key={video.id}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  delay: idx * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="group flex flex-col gap-3"
               >
-                INSTAGRAM REELS
-              </h2>
-              <p className="text-white/70 text-base sm:text-lg max-w-xl mb-10">
-                Scroll inside the phone — swipe through our reel designs, just like Instagram.
-              </p>
-
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={activeReelIndex}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="border-l-2 border-neon-orange pl-6"
-                >
-                  <p className="text-neon-orange text-sm font-semibold uppercase tracking-widest mb-2">
-                    Now viewing
-                  </p>
-                  <h3
-                    className="text-white text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-2"
-                    style={{ fontFamily: "'Archivo Black', sans-serif" }}
-                  >
-                    {INSTAGRAM_REELS[activeReelIndex].title}
+                <div className="relative w-full overflow-hidden rounded-xl border border-black/10 bg-black/5 shadow-lg shadow-black/5 transition-shadow duration-300 group-hover:shadow-xl group-hover:shadow-black/10 aspect-video">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-black text-base sm:text-lg font-semibold tracking-tight">
+                    {video.title}
                   </h3>
-                  <p className="text-white/60 text-base sm:text-lg">
-                    {INSTAGRAM_REELS[activeReelIndex].desc}
+                  <p className="text-black/60 text-sm sm:text-[15px]">
+                    A focused case-study style edit that showcases our approach to pacing, framing,
+                    typography in motion, and sound design for YouTube-first content.
                   </p>
-                </motion.div>
-              </AnimatePresence>
-
-              <p className="text-white/40 text-sm mt-6">
-                {activeReelIndex + 1} of {INSTAGRAM_REELS.length}
-              </p>
-            </motion.div>
-
-            {/* Right: iPhone with scrollable reels — real Instagram UI */}
-            <motion.div
-              className="order-1 lg:order-2 flex justify-center lg:justify-end items-center"
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="w-[200px] sm:w-[220px] md:w-[240px] lg:w-[260px] max-w-[90vw]">
-                <Iphone bodyColor="#FFFFFF" dynamicIslandColor="#000000">
-                  <div
-                    ref={reelsScrollRef}
-                    onScroll={handleReelsScroll}
-                    className="reels-scroll-hide absolute inset-0 flex flex-col gap-0 bg-black overflow-y-auto overflow-x-hidden overscroll-contain snap-y snap-mandatory scroll-smooth"
-                    style={{
-                      touchAction: 'pan-y',
-                      WebkitOverflowScrolling: 'touch',
-                      scrollbarWidth: 'none',
-                      msOverflowStyle: 'none',
-                    } as React.CSSProperties}
-                  >
-                    {INSTAGRAM_REELS.map((reel) => (
-                      <div
-                        key={reel.id}
-                        className="relative shrink-0 w-full snap-start snap-always overflow-hidden bg-black p-0 m-0"
-                        style={{ flex: '0 0 100%', minHeight: 0 }}
-                      >
-                        {isReelsSectionInView && (
-                          <>
-                            <iframe
-                              src={`https://www.instagram.com/reel/${reel.id}/embed/`}
-                              title="Instagram Reel"
-                              className="absolute inset-0 w-full h-full border-0 block"
-                              style={{
-                                transform: 'scale(1.06)',
-                                transformOrigin: 'center center',
-                              }}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                              allowFullScreen
-                            />
-                            <div
-                              className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-4 pointer-events-none z-10"
-                              aria-hidden
-                            >
-                              <Heart className="w-5 h-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" strokeWidth={2} />
-                              <MessageCircle className="w-5 h-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" strokeWidth={2} />
-                              <Share2 className="w-5 h-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" strokeWidth={2} />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </Iphone>
-              </div>
-            </motion.div>
+                </div>
+              </motion.article>
+            ))}
           </div>
         </div>
       </motion.section>
+
+      {/* Section: INSTAGRAM REELS — marquee strip + modal */}
+      <section id="instagram-reels" className="bg-white py-16 sm:py-20 md:py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
+            className="text-black text-3xl sm:text-4xl md:text-5xl tracking-tight uppercase mb-4"
+            style={{ fontFamily: "'Archivo Black', sans-serif" }}
+          >
+            INSTAGRAM REELS
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] as any }}
+            className="text-black/60 text-base sm:text-lg max-w-2xl mb-10"
+          >
+            A handpicked line of reels from our Instagram – design breakdowns, campaign snippets, and quick stories from the edit table. Scroll through and tap any card to open it directly on Instagram.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as any }}
+            className="overflow-hidden"
+          >
+            <div
+              className="flex gap-6 w-max"
+              style={{ animation: 'marquee 70s linear infinite' }}
+            >
+              {INSTAGRAM_REELS.concat(INSTAGRAM_REELS).map((reel, idx) => (
+                <div
+                  key={`${reel.id}-${idx}`}
+                  className="shrink-0 w-[220px] sm:w-[240px] md:w-[260px]"
+                >
+                  <a
+                    href={reel.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group block relative h-[340px] sm:h-[380px] w-full rounded-2xl overflow-hidden border border-black/10 shadow-sm hover:shadow-lg transition-all duration-300 bg-black"
+                  >
+                    <img
+                      src={getReelPreview(reel.id)}
+                      alt={reel.label}
+                      className="absolute inset-0 h-full w-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+                          {reel.label}
+                        </p>
+                        <p className="text-[11px] text-white/60">
+                          Tap to watch on Instagram
+                        </p>
+                      </div>
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-black text-xs font-semibold">
+                        IG
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

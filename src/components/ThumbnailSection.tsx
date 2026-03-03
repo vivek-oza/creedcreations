@@ -3,15 +3,28 @@ import { motion, AnimatePresence } from 'motion/react';
 import { titleAnim, descAnim } from '../utils/scrollAnimations';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// 20 YouTube thumbnails from public/thumbnails/ (thumbnail1–12 .png, thumbnail13–20 .jpeg)
 const THUMBNAILS = [
-  { src: '/thumbnails/thumbnail1.jpeg', title: 'Brand Identity', description: 'Visual identity that defines your business.' },
-  { src: '/thumbnails/thumbnail2.jpeg', title: 'Logo Design', description: 'Memorable logos that stand the test of time.' },
-  { src: '/thumbnails/thumbnail3.jpeg', title: 'Graphic Design', description: 'Striking visuals that capture attention.' },
-  { src: '/thumbnails/thumbnail4.jpeg', title: 'Video Production', description: 'Cinematic storytelling for your brand.' },
-  { src: '/thumbnails/thumbnail5.jpeg', title: 'Motion Graphics', description: 'Dynamic animations that engage viewers.' },
-  { src: '/thumbnails/thumbnail6.jpeg', title: 'Social Media', description: 'Scroll-stopping content for your channels.' },
-  { src: '/thumbnails/thumbnail7.jpeg', title: 'Marketing Materials', description: 'Professional assets that drive results.' },
-  { src: '/thumbnails/thumbnail8.jpeg', title: 'Web & UI/UX', description: 'Digital experiences that convert.' },
+  { src: '/thumbnails/thumbnail1.png', title: 'Brand Identity', description: 'Visual identity that defines your business.' },
+  { src: '/thumbnails/thumbnail2.png', title: 'Logo Design', description: 'Memorable logos that stand the test of time.' },
+  { src: '/thumbnails/thumbnail3.png', title: 'Graphic Design', description: 'Striking visuals that capture attention.' },
+  { src: '/thumbnails/thumbnail4.png', title: 'Video Production', description: 'Cinematic storytelling for your brand.' },
+  { src: '/thumbnails/thumbnail5.png', title: 'Motion Graphics', description: 'Dynamic animations that engage viewers.' },
+  { src: '/thumbnails/thumbnail6.png', title: 'Social Media', description: 'Scroll-stopping content for your channels.' },
+  { src: '/thumbnails/thumbnail7.png', title: 'Marketing Materials', description: 'Professional assets that drive results.' },
+  { src: '/thumbnails/thumbnail8.png', title: 'Web & UI/UX', description: 'Digital experiences that convert.' },
+  { src: '/thumbnails/thumbnail9.png', title: 'YouTube Thumbnails', description: 'Click-worthy thumbnails that boost engagement.' },
+  { src: '/thumbnails/thumbnail10.png', title: 'Reel Previews', description: 'Eye-catching previews for reels and shorts.' },
+  { src: '/thumbnails/thumbnail11.png', title: 'Content Strategy', description: 'Visual content that aligns with your strategy.' },
+  { src: '/thumbnails/thumbnail12.png', title: 'Creative Campaigns', description: 'Campaign visuals that connect and convert.' },
+  { src: '/thumbnails/thumbnail13.jpeg', title: 'Thumbnail Design', description: 'Professional thumbnails for YouTube and social.' },
+  { src: '/thumbnails/thumbnail14.jpeg', title: 'Video Covers', description: 'Striking covers that draw viewers in.' },
+  { src: '/thumbnails/thumbnail15.jpeg', title: 'Digital Assets', description: 'High-impact digital visuals for your brand.' },
+  { src: '/thumbnails/thumbnail16.jpeg', title: 'Social Covers', description: 'Scroll-stopping covers for social feeds.' },
+  { src: '/thumbnails/thumbnail17.jpeg', title: 'Channel Art', description: 'Channel branding that builds recognition.' },
+  { src: '/thumbnails/thumbnail18.jpeg', title: 'Visual Storytelling', description: 'Thumbnails that tell a story at a glance.' },
+  { src: '/thumbnails/thumbnail19.jpeg', title: 'Creative Thumbnails', description: 'Bold, memorable thumbnails for your content.' },
+  { src: '/thumbnails/thumbnail20.jpeg', title: 'Design Showcase', description: 'Our best thumbnail work in one place.' },
 ];
 
 const AUTO_ADVANCE_MS = 3000;
@@ -66,7 +79,7 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
             {...descAnim}
             className="text-black/60 text-base sm:text-lg max-w-2xl"
           >
-            Best thumbnail design in Gandhinagar — a curated showcase of our design work for YouTube, reels, and social media. Browse through each project.
+            A curated showcase of our thumbnail designs for YouTube, reels, and social media — click through to explore each project.
           </motion.p>
         </motion.div>
       )}
