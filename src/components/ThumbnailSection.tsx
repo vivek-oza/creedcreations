@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { titleAnim, descAnim } from '../utils/scrollAnimations';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import SafeImage from './SafeImage';
 
 // 20 YouTube thumbnails from public/thumbnails/ (thumbnail1–12 .png, thumbnail13–20 .jpeg)
 const THUMBNAILS = [
@@ -96,12 +97,13 @@ const ThumbnailSection: React.FC<ThumbnailSectionProps> = ({ variant = 'home' })
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className={isPortfolio ? 'absolute inset-0' : 'absolute inset-0'}
             >
-              <img
+              <SafeImage
                 src={current.src}
                 alt={current.title}
                 width={1920}
                 height={1080}
                 loading="lazy"
+                decoding="async"
                 className={`w-full h-full object-center ${
                   isPortfolio ? 'object-contain' : 'object-cover'
                 }`}

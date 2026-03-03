@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import { Hero, StatsSection, BlogsSection, Navigation, Logo, MarqueeStrip, WhiteStrip, PortfolioSection, VideoSection, AboutIntroSection, AboutUsSection, ThumbnailSection, ServicesSection, ClientReviewsSection, OurClientsSection, Footer } from '../components';
 import { SmoothCursor } from '../components/ui/smooth-cursor';
-import ContactModal from '../components/ContactModal';
-import { useNavTheme } from '../hooks/useNavTheme';
-import { useIsHeroInView } from '../hooks/useIsHeroInView';
+import { useScrollContext } from '../contexts/ScrollContext';
+
+const ContactModal = lazy(() => import('../components/ContactModal'));
 
 const HomePage: React.FC = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const isLightBg = useNavTheme();
-  const isHeroInView = useIsHeroInView();
+  const { isLightBg, isHeroInView } = useScrollContext();
   const isCompact = !isHeroInView;
 
   return (
@@ -61,7 +60,11 @@ const HomePage: React.FC = () => {
       <StatsSection />
       <BlogsSection />
       <Footer onContactClick={() => setIsContactOpen(true)} />
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      {isContactOpen && (
+        <Suspense fallback={null}>
+          <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+        </Suspense>
+      )}
     </div>
   );
 };

@@ -34,7 +34,7 @@ export const POSTS: PostItem[] = [
     shares: '920',
   },
   {
-    image: 'creatives/creative4.png',
+    image: '/creatives/creative4.png',
     title: 'PSI 2.0',
     subtitle: 'Complete PSI Course',
     description: 'Creed Creation designed this high-impact purple-gradient poster with a clean dual-column layout to organize massive course information into scannable sections.',
@@ -42,7 +42,7 @@ export const POSTS: PostItem[] = [
     shares: '540',
   },
   {
-    image: 'creatives/creative5.png',
+    image: '/creatives/creative5.png',
     title: 'Break Free',
     subtitle: 'Lifestyle Poster',
     description: 'Escape, embrace, adventure — a poster about self-discovery and the joy of exploration.',
@@ -50,7 +50,7 @@ export const POSTS: PostItem[] = [
     shares: '710',
   },
   {
-    image: 'creatives/creative6.png',
+    image: '/creatives/creative6.png',
     title: 'AO MAINS — MOCK TEST',
     subtitle: '5-Day Subject-Wise Mock Test Series',
     description: 'Creed Creation designed this clean, structured poster with a crisp white background and navy blue accents to convey professionalism and exam readiness.',
@@ -58,7 +58,7 @@ export const POSTS: PostItem[] = [
     shares: '1.1k',
   },
   {
-    image: 'creatives/creative7.png',
+    image: '/creatives/creative7.png',
     title: 'RFO MAINS MOCK TEST WITH EVALUATION',
     subtitle: '5-Day Subject-Wise Mock Test Series',
     description: 'Creed Creation designed this bold, high-energy poster with a striking red-to-orange gradient background to grab attention instantly.',
@@ -66,7 +66,7 @@ export const POSTS: PostItem[] = [
     shares: '1.3k',
   },
   {
-    image: 'creatives/creative8.png',
+    image: '/creatives/creative8.png',
     title: 'GPSC CLASS 1/2 SMART COURSE',
     subtitle: 'GPSC Poster Design',
     description: 'Creed Creation designed this professional, credibility-focused poster with a clean layout featuring headshots and detailed faculty profiles.',

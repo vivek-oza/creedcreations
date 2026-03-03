@@ -46,6 +46,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', onClick, isLightBg = false,
           alt="CREED CREATIONS"
           width={96}
           height={104}
+          fetchPriority="high"
           className={`object-contain transition-all duration-300 group-hover:brightness-110 group-hover:drop-shadow-lg aspect-square ${isCompact ? 'w-16 h-16 sm:w-20 sm:h-20' : 'w-20 h-20 sm:w-24 sm:h-24'}`}
           style={{
             filter: isLightBg ? 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))' : 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',

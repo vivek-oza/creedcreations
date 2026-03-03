@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SafeImage from './SafeImage';
 
 interface PosterCardProps {
   image: string;
@@ -37,7 +38,7 @@ const PosterCard: React.FC<PosterCardProps> = ({
       >
         {/* Poster Image */}
         <div className="w-full aspect-[3/4] overflow-hidden">
-          <img
+          <SafeImage
             src={image}
             alt={title}
             width={320}

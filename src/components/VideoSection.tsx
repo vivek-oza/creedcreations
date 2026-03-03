@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { titleAnim, descAnim } from '../utils/scrollAnimations';
 
@@ -14,22 +14,25 @@ interface VideoSectionProps {
  */
 const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSrc }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videos = [
-    videoSrc, // video3 plays first
-    '/videos/video1.mp4',
-    '/videos/video2.mp4',
-  ];
+  const [hasError, setHasError] = useState(false);
+  const videos = [videoSrc, '/videos/video1.mp4', '/videos/video2.mp4'];
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
+    setHasError(false);
     videoRef.current?.load();
-  };
+  }, [videos.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % videos.length);
+    setHasError(false);
     videoRef.current?.load();
-  };
+  }, [videos.length]);
+
+  const handleVideoError = useCallback(() => {
+    setHasError(true);
+  }, []);
 
   return (
     <section id="video-design" className="bg-neon-orange py-12 sm:py-16 md:py-20 lg:py-24">
@@ -61,16 +64,24 @@ const VideoSection: React.FC<VideoSectionProps> = ({ title, description, videoSr
               boxShadow: '0 0 0 1px rgba(255,255,255,0.05), 0 24px 48px rgba(0,0,0,0.5)',
             }}
           >
-            <video
-              ref={videoRef}
-              src={videos[currentIndex]}
-              className="w-full aspect-video object-cover"
-              playsInline
-              autoPlay
-              muted
-              loop
-              controls
-            />
+            {hasError ? (
+              <div className="w-full aspect-video flex items-center justify-center bg-black/80 text-white/80 text-sm" role="status">
+                Video unavailable. Use the arrows to try another.
+              </div>
+            ) : (
+              <video
+                ref={videoRef}
+                src={videos[currentIndex]}
+                className="w-full aspect-video object-cover"
+                playsInline
+                autoPlay
+                muted
+                loop
+                controls
+                onError={handleVideoError}
+                aria-label="Video showcase"
+              />
+            )}
 
             {/* Carousel controls */}
             <button

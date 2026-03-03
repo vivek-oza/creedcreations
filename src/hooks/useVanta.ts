@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { logger } from '../utils/logger';
 
 interface VantaEffect {
   destroy: () => void;
@@ -12,6 +13,28 @@ function isMobileOrTouch(): boolean {
     window.matchMedia('(max-width: 768px)').matches ||
     'ontouchstart' in window
   );
+}
+
+/** Load Vanta scripts dynamically after paint to avoid blocking LCP */
+function loadVantaScripts(): Promise<{ VANTA: unknown; THREE: unknown }> {
+  if (typeof window !== 'undefined' && window.VANTA && window.THREE) {
+    return Promise.resolve({ VANTA: window.VANTA, THREE: window.THREE });
+  }
+  return new Promise((resolve, reject) => {
+    const three = document.createElement('script');
+    three.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
+    three.async = true;
+    three.onload = () => {
+      const vanta = document.createElement('script');
+      vanta.src = 'https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js';
+      vanta.async = true;
+      vanta.onload = () => resolve({ VANTA: (window as any).VANTA, THREE: (window as any).THREE });
+      vanta.onerror = reject;
+      document.body.appendChild(vanta);
+    };
+    three.onerror = reject;
+    document.body.appendChild(three);
+  });
 }
 
 interface VantaWavesOptions {
@@ -74,7 +97,7 @@ export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {})
         ...overrides,
       });
     } catch (error) {
-      console.error('Failed to initialize Vanta effect:', error);
+      logger.error('Vanta effect init failed', { error: error instanceof Error ? error.message : 'Unknown' });
     }
   }, [overrides, skipVanta]);
 
@@ -85,17 +108,26 @@ export const useVanta = (overrides: Partial<Omit<VantaWavesOptions, 'el'>> = {})
       vantaEffect.current.destroy();
       vantaEffect.current = null;
     } catch (error) {
-      console.error('Failed to destroy Vanta effect:', error);
+      logger.error('Vanta effect destroy failed', { error: error instanceof Error ? error.message : 'Unknown' });
     }
   }, []);
 
-  // Initialize and cleanup (skip on mobile to prevent WebGL white screen)
+  // Initialize after scripts load (deferred to avoid blocking initial paint)
   useEffect(() => {
     if (skipVanta) return;
-    if (typeof window === 'undefined' || !window.VANTA || !window.THREE) return;
 
-    createEffect();
-    return destroyEffect;
+    let cancelled = false;
+    loadVantaScripts()
+      .then(() => {
+        if (cancelled) return;
+        createEffect();
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+      destroyEffect();
+    };
   }, [createEffect, destroyEffect, skipVanta]);
 
   // Debounced resize handler (only when Vanta is active)

@@ -67,7 +67,7 @@ interface FooterProps {
   onContactClick?: () => void;
 }
 
-const Footer: React.FC<FooterProps> = () => {
+const Footer: React.FC<FooterProps> = ({ onContactClick }) => {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.15 });
 
@@ -117,15 +117,28 @@ const Footer: React.FC<FooterProps> = () => {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <motion.a
-              href="tel:7600111331"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.35, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="px-4 py-2 rounded-full bg-white text-black font-semibold text-sm uppercase tracking-wide hover:bg-neon-orange hover:text-white transition-all duration-300"
-            >
-              Book a call
-            </motion.a>
+            {onContactClick ? (
+              <motion.button
+                type="button"
+                onClick={onContactClick}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.35, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="px-4 py-2 rounded-full bg-white text-black font-semibold text-sm uppercase tracking-wide hover:bg-neon-orange hover:text-white transition-all duration-300"
+              >
+                Book a call
+              </motion.button>
+            ) : (
+              <motion.a
+                href="tel:7600111331"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.35, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="px-4 py-2 rounded-full bg-white text-black font-semibold text-sm uppercase tracking-wide hover:bg-neon-orange hover:text-white transition-all duration-300"
+              >
+                Book a call
+              </motion.a>
+            )}
             {SOCIAL_LINKS.map((link, idx) => {
               const Icon = link.icon;
               const isExternal = link.href.startsWith('http') || link.href.startsWith('https');

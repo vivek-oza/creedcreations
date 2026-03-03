@@ -74,6 +74,10 @@ function SocialIcon({ link, isLast }: { link: SocialLink; isLast: boolean }) {
       <img
         src={ICON_MAP[link.icon]}
         alt={link.label || link.name}
+        width={40}
+        height={40}
+        loading="lazy"
+        decoding="async"
         className="h-full w-full object-contain p-1.5"
       />
     </a>

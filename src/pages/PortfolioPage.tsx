@@ -1,80 +1,27 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Navigation, Logo, Footer, VideoSection, ThumbnailSection } from '../components';
-import { useIsHeroInView } from '../hooks/useIsHeroInView';
-import ContactModal from '../components/ContactModal';
+import { useScrollContext } from '../contexts/ScrollContext';
 import { SmoothCursor } from '../components/ui/smooth-cursor';
-import { POSTS } from '../data/posts';
 import { DraggableCardBody, DraggableCardContainer } from '../components/ui/draggable-card';
+import MarqueePostCard from '../components/portfolio/MarqueePostCard';
+import SafeImage from '../components/SafeImage';
+import { POSTS } from '../data/posts';
+import {
+  HERO_TITLE,
+  VIDEO_SHORTS,
+  FEATURED_VIDEOS,
+  INSTAGRAM_REELS,
+  getReelPreview,
+  DRAGGABLE_CLIENT_ITEMS,
+} from '../data/portfolio';
 
-const HERO_TITLE = 'MY BEST WORK';
-
-const VIDEO_SHORTS = [
-  { id: '5_MQhfa0VwU' },
-  { id: 'C-T-lGUTiP4' },
-  { id: '7kZ6FWlx738' },
-  { id: 'eR3pJXY8Cdw' },
-  { id: 'KCfUg4vQbk4' },
-  { id: 'zF4u7Wm3F_I' },
-];
-
-const FEATURED_VIDEOS = [
-  { id: 'rGgrxO1WkdQ', title: 'CREED CREATIONS — Showreel' },
-  { id: 'gx9uqip4xbY', title: 'Brand Film — Visual Story' },
-  { id: 'Jv5Z_r5wZBU', title: 'Design Breakdown — Campaign' },
-  { id: 'RKWkcTl0IIs', title: 'Thumbnail & Reel Design' },
-];
-
-const INSTAGRAM_REELS = [
-  {
-    id: 'DRADg0GDCO9',
-    label: 'Reel 1',
-    url: 'https://www.instagram.com/reel/DRADg0GDCO9/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-  {
-    id: 'DQzakcgDI3R',
-    label: 'Reel 2',
-    url: 'https://www.instagram.com/reel/DQzakcgDI3R/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-  {
-    id: 'DMDaaBwxMEl',
-    label: 'Reel 3',
-    url: 'https://www.instagram.com/reel/DMDaaBwxMEl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-  {
-    id: 'DMVTy18xQSy',
-    label: 'Reel 4',
-    url: 'https://www.instagram.com/reel/DMVTy18xQSy/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-  {
-    id: 'DMc0xkeR9ak',
-    label: 'Reel 5',
-    url: 'https://www.instagram.com/reel/DMc0xkeR9ak/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-  {
-    id: 'DRrCmGeDNda',
-    label: 'Reel 6',
-    url: 'https://www.instagram.com/reel/DRrCmGeDNda/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-  },
-];
-
-// Reel preview images from public/reels/ (Reel1.png … Reel6.png), name-wise
-const REEL_PREVIEWS: Record<string, string> = {
-  DRADg0GDCO9: '/reels/Reel1.png',
-  DQzakcgDI3R: '/reels/Reel2.png',
-  DMDaaBwxMEl: '/reels/Reel3.png',
-  DMVTy18xQSy: '/reels/Reel4.png',
-  DMc0xkeR9ak: '/reels/Reel5.png',
-  DRrCmGeDNda: '/reels/Reel6.png',
-};
-
-const getReelPreview = (id: string) => REEL_PREVIEWS[id] ?? '/reels/Reel1.png';
+const ContactModal = lazy(() => import('../components/ContactModal'));
 
 const PortfolioPage: React.FC = () => {
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const isLightBg = true;
-  const isHeroInView = useIsHeroInView();
+  const { isLightBg, isHeroInView } = useScrollContext();
   const isCompact = !isHeroInView;
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -96,9 +43,8 @@ const PortfolioPage: React.FC = () => {
       <motion.section
         id="portfolio-hero"
         ref={heroRef}
-        style={{ y, opacity, scale }}
+        style={{ y, opacity, scale, paddingTop: 'max(6rem, env(safe-area-inset-top) + 5rem)' }}
         className="relative flex min-h-[85vh] sm:min-h-[90vh] items-center justify-center overflow-hidden bg-white"
-        style={{ paddingTop: 'max(6rem, env(safe-area-inset-top) + 5rem)' }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 w-full">
           <motion.h1
@@ -172,46 +118,10 @@ const PortfolioPage: React.FC = () => {
                 style={{ animation: 'marquee 45s linear infinite' }}
               >
                 {POSTS.map((post, idx) => (
-                  <div
-                    key={`m1-${idx}`}
-                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                      <div className="aspect-[3/4] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{post.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <MarqueePostCard key={`m1-${idx}`} post={post} rowKey={`m1-${idx}`} />
                 ))}
                 {POSTS.map((post, idx) => (
-                  <div
-                    key={`m1dup-${idx}`}
-                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                      <div className="aspect-[3/4] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{post.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <MarqueePostCard key={`m1dup-${idx}`} post={post} rowKey={`m1dup-${idx}`} />
                 ))}
               </div>
             </div>
@@ -221,46 +131,10 @@ const PortfolioPage: React.FC = () => {
                 style={{ animation: 'marquee-reverse 55s linear infinite' }}
               >
                 {[...POSTS].reverse().map((post, idx) => (
-                  <div
-                    key={`m2-${idx}`}
-                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                      <div className="aspect-[3/4] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{post.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <MarqueePostCard key={`m2-${idx}`} post={post} rowKey={`m2-${idx}`} />
                 ))}
                 {[...POSTS].reverse().map((post, idx) => (
-                  <div
-                    key={`m2dup-${idx}`}
-                    className="shrink-0 w-[240px] min-[400px]:w-[272px] sm:w-[304px] md:w-[320px] min-w-0"
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/5">
-                      <div className="aspect-[3/4] overflow-hidden">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <p className="text-white font-semibold text-sm">{post.title}</p>
-                        <p className="text-white/60 text-xs mt-1">{post.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <MarqueePostCard key={`m2dup-${idx}`} post={post} rowKey={`m2dup-${idx}`} />
                 ))}
               </div>
             </div>
@@ -312,7 +186,7 @@ const PortfolioPage: React.FC = () => {
                 }}
                 className="group relative overflow-hidden rounded-lg border border-black/5 bg-white aspect-[3/4]"
               >
-                <img
+                <SafeImage
                   src={post.image}
                   alt={post.title}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -367,14 +241,7 @@ const PortfolioPage: React.FC = () => {
             Drag and tilt these cards to explore our creative process — bold design meets interactive experience.
           </motion.p>
           <DraggableCardContainer className="flex flex-wrap justify-center gap-2 sm:gap-3 -m-1 overflow-visible">
-            {[
-              { src: '/clients/CLIENT-1.jpeg', title: 'Client 1' },
-              { src: '/clients/CLIENT-2.jpeg', title: 'Client 2' },
-              { src: '/clients/CLIENT-3.jpeg', title: 'Client 3' },
-              { src: '/clients/CLIENT-4.jpeg', title: 'Client 4' },
-              { src: '/clients/CLIENT-5.jpeg', title: 'Client 5' },
-              { src: '/clients/CLIENT-6.jpeg', title: 'Client 6' },
-            ].map((item) => (
+            {DRAGGABLE_CLIENT_ITEMS.map((item) => (
               <DraggableCardBody
                 key={item.src}
                 className="!min-h-56 !w-48 sm:!min-h-64 sm:!w-56 !bg-black !border-white/20 !p-0 overflow-hidden shrink-0"
@@ -586,12 +453,16 @@ const PortfolioPage: React.FC = () => {
                   <a
                     href={reel.url}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="group block relative h-[340px] sm:h-[380px] w-full rounded-2xl overflow-hidden border border-black/10 shadow-sm hover:shadow-lg transition-all duration-300 bg-black"
                   >
-                    <img
+                    <SafeImage
                       src={getReelPreview(reel.id)}
                       alt={reel.label}
+                      width={260}
+                      height={380}
+                      loading="lazy"
+                      decoding="async"
                       className="absolute inset-0 h-full w-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -631,7 +502,11 @@ const PortfolioPage: React.FC = () => {
         </Link>
       </motion.div>
       <Footer onContactClick={() => setIsContactOpen(true)} />
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      {isContactOpen && (
+        <Suspense fallback={null}>
+          <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+        </Suspense>
+      )}
     </div>
   );
 };

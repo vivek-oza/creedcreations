@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { NAVIGATION } from '../utils/constants';
-import { useActiveSection } from '../hooks/useActiveSection';
+import { debounce } from '../utils/debounce';
+import { useScrollContext } from '../contexts/ScrollContext';
 
 interface NavigationProps {
   className?: string;
@@ -18,7 +19,7 @@ interface NavigationProps {
  */
 const Navigation: React.FC<NavigationProps> = ({ className = '', onContactClick, isLightBg = false, isCompact = false }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const activeTab = useActiveSection();
+  const { activeLabel: activeTab } = useScrollContext();
   const navigationItems = NAVIGATION;
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({ className = '', onContactClick,
   };
 
   useEffect(() => {
-    const handler = () => setMobileOpen(false);
+    const handler = debounce(() => setMobileOpen(false), 150);
     window.addEventListener('resize', handler);
     return () => window.removeEventListener('resize', handler);
   }, []);
