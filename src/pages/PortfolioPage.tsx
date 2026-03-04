@@ -8,6 +8,7 @@ import { DraggableCardBody, DraggableCardContainer } from '../components/ui/drag
 import MarqueePostCard from '../components/portfolio/MarqueePostCard';
 import SafeImage from '../components/SafeImage';
 import { POSTS } from '../data/posts';
+import { DESIGNS } from '../data/designs';
 import {
   HERO_TITLE,
   VIDEO_SHORTS,
@@ -68,7 +69,7 @@ const PortfolioPage: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* GRAPHIC DESIGNS — Main section with multiple sub-sections */}
+      {/* POSTER DESIGNS — Main section with multiple sub-sections */}
       <section id="graphic-designs" className="bg-white">
         {/* Section header */}
         <motion.div
@@ -86,7 +87,7 @@ const PortfolioPage: React.FC = () => {
             className="text-black text-2xl xs:text-3xl sm:text-fluid-3xl md:text-fluid-4xl lg:text-fluid-5xl tracking-tight uppercase mb-4"
             style={{ fontFamily: "'Archivo Black', sans-serif" }}
           >
-            GRAPHIC DESIGNS
+            POSTER DESIGNS
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 28 }}
@@ -99,7 +100,8 @@ const PortfolioPage: React.FC = () => {
             }}
             className="text-black/60 text-fluid-base sm:text-fluid-lg max-w-2xl"
           >
-            Posters, campaigns, and visual identity work by CREED CREATIONS studio.
+            Coaching, exam and education posters for PSI, Constable, AO, RFO and GPSC — information-heavy
+            layouts that stay clear, structured, and on-brand.
           </motion.p>
         </motion.div>
 
@@ -156,7 +158,7 @@ const PortfolioPage: React.FC = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as any }}
             className="text-black/40 text-sm font-semibold uppercase tracking-widest mb-2"
           >
-            Grid Showcase
+            My Designs
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 28 }}
@@ -169,13 +171,13 @@ const PortfolioPage: React.FC = () => {
             }}
             className="text-black/50 text-sm max-w-xl mb-6"
           >
-            Our best poster and campaign work — music, fashion, automotive, and lifestyle. Each piece
-            crafted with bold typography and a distinct visual language.
+            A curated wall of experimental work — magazine covers, travel campaigns, tributes, brand launches
+            and personal explorations in composition, colour and typography.
           </motion.p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 sm:gap-2">
-            {POSTS.map((post, idx) => (
+            {DESIGNS.map((design, idx) => (
               <motion.div
-                key={post.image}
+                key={design.image}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
@@ -187,16 +189,16 @@ const PortfolioPage: React.FC = () => {
                 className="group relative overflow-hidden rounded-lg border border-black/5 bg-white aspect-[3/4]"
               >
                 <SafeImage
-                  src={post.image}
-                  alt={post.title}
+                  src={design.image}
+                  alt={design.title}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
                 <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 bg-gradient-to-t from-black/85 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white font-bold text-sm sm:text-base">{post.title}</p>
-                  <p className="text-white/80 text-xs sm:text-sm">{post.subtitle}</p>
+                  <p className="text-white font-bold text-sm sm:text-base">{design.title}</p>
+                  <p className="text-white/80 text-xs sm:text-sm">{design.subtitle}</p>
                   <p className="text-white/70 text-xs mt-1 line-clamp-2 hidden sm:block">
-                    {post.description}
+                    {design.description}
                   </p>
                 </div>
               </motion.div>

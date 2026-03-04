@@ -24,7 +24,8 @@ const PortfolioSection: React.FC = () => {
           {...descAnim}
           className="text-white/90 text-fluid-base sm:text-fluid-lg mt-3 max-w-3xl leading-relaxed"
         >
-          A collection of posters that define brands, tell stories, and break the mold.
+          A collection of posters that define brands, tell stories, and break the mold — pulled from
+          our favourite work in the posters gallery.
         </motion.p>
       </div>
 

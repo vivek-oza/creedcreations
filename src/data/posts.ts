@@ -7,7 +7,7 @@ export interface PostItem {
   shares: string;
 }
 
-// Grid showcase — images from public/posters/ (Image1.jpeg … Image8.jpeg)
+// Poster marquee — education and exam creatives from public/creatives/ (creative1.png … creative8.png)
 export const POSTS: PostItem[] = [
   {
     image: '/creatives/creative1.png',
